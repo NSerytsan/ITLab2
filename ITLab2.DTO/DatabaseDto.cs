@@ -10,4 +10,14 @@ namespace ITLab2.DTO
         public DatabaseDTO() { }
         public DatabaseDTO(Database database) => (Id, Name) = (database.Id, database.Name);
     }
+
+    public class CreateDatabaseDTO
+    {
+        public string? Name { get; set; }
+    }
+
+    public class UpdateDatabaseDTO
+    {
+        public string? Name { get; set; }
+    }
 }

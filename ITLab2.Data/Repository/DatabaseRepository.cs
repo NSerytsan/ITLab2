@@ -7,7 +7,7 @@ namespace ITLab2.Data.Repository
     {
         private readonly DatabaseStorage _storage = storage;
 
-        public IEnumerable<Database> Get()
+        public IEnumerable<Database> GetAll()
         {
             return _storage.Databases.AsNoTracking().ToList();
         }

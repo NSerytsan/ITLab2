@@ -2,9 +2,9 @@
 
 namespace ITLab2.Data.Repository
 {
-    internal interface IDatabaseRepository
+    public interface IDatabaseRepository
     {
-        public IEnumerable<Database> Get();
+        public IEnumerable<Database> GetAll();
         public Database? Get(int id);
         public void Add(Database database);
         public void Update(Database database);
