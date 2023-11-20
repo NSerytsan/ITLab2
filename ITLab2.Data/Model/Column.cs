@@ -13,6 +13,6 @@ namespace ITLab2.Data.Model
         public string? Type { get; set; }
         [Required]
         [ForeignKey("TableId")]
-        public virtual Table? Table { get; set; }
+        public virtual required Table Table { get; set; }
     }
 }

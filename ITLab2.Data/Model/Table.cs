@@ -12,6 +12,6 @@ namespace ITLab2.Data.Model
         public virtual ICollection<Column>? Columns { get; set; }
         [Required]
         [ForeignKey("DatabaseId")]
-        public virtual Database? Database { get; set; }
+        public virtual required Database Database { get; set; }
     }
 }

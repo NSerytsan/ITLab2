@@ -21,14 +21,8 @@ namespace ITLab2.WebAPI.Endpoints
             var tablesGroup = databasesGroup.MapGroup("{dbId:int}/tables");
 
             tablesGroup.MapGet("", GetAllTables);
-
-            tablesGroup.MapGet("{tabId:int}", (int dbId, int tabId) =>
-            {
-            });
-
-            tablesGroup.MapPost("", (int dbId) =>
-            {
-            });
+            tablesGroup.MapGet("{tabId:int}", GetTable);
+            tablesGroup.MapPost("", CreateTable);
 
             tablesGroup.MapPut("{tabId:int}", (int dbId, int tabId) =>
             {
@@ -63,7 +57,7 @@ namespace ITLab2.WebAPI.Endpoints
 
         private static async Task<IResult> GetAllDatabases(DatabaseStorage storage)
         {
-            var databases = await storage.Databases.ToListAsync();
+            var databases = await storage.Databases.Include(d => d.Tables).ToListAsync();
 
             return TypedResults.Ok(databases.ToDatabaseDTOs());
         }
@@ -119,11 +113,40 @@ namespace ITLab2.WebAPI.Endpoints
             return TypedResults.NotFound();
         }
 
-        private static async Task<IResult> GetAllTables(DatabaseStorage storage)
+        private static async Task<IResult> GetAllTables(int dbId, DatabaseStorage storage)
         {
-            var tables = await storage.Tables.ToListAsync();
+            var tables = await storage.Tables.Where(t => t.Database.Id == dbId).ToArrayAsync();
 
-            return TypedResults.Ok(tables);
+            return TypedResults.Ok(tables.ToTableDTOs());
+        }
+
+        private static async Task<IResult> GetTable(int dbId, int tabId, DatabaseStorage storage)
+        {
+            return await storage.Tables.FindAsync(tabId)
+                is Table table
+                    ? TypedResults.Ok(table.ToTableDTO())
+                    : TypedResults.NotFound();
+        }
+
+        private static async Task<IResult> CreateTable(int dbId, CreateTableDTO newTableDTO, DatabaseStorage storage)
+        {
+            var database = await storage.Databases.FindAsync(dbId);
+
+            if (database is null) return TypedResults.NotFound();
+
+            var table = new Table
+            {
+                Name = newTableDTO.Name,
+                Database = database
+            };
+
+            await storage.Tables.AddAsync(table);
+
+            await storage.SaveChangesAsync();
+
+            var tableDTO = table.ToTableDTO();
+
+            return TypedResults.Created($"/databases/{database.Id}/tablses/{table.Id}", tableDTO);
         }
     }
 }

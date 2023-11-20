@@ -9,7 +9,14 @@ namespace ITLab2.DTO.Extensions
             return new DatabaseDTO()
             {
                 Id = database.Id,
-                Name = database.Name
+                Name = database.Name,
+                Tables = (database.Tables is not null) ?
+                from table in database.Tables
+                select new TableDTO()
+                {
+                    Id = table.Id,
+                    Name = table.Name
+                } : []
             };
         }
 
@@ -17,6 +24,21 @@ namespace ITLab2.DTO.Extensions
         {
             return from database in databases
                    select database.ToDatabaseDTO();
+        }
+
+        public static TableDTO ToTableDTO(this Table table)
+        {
+            return new TableDTO()
+            {
+                Id = table.Id,
+                Name = table.Name
+            };
+        }
+
+        public static IEnumerable<TableDTO> ToTableDTOs(this IEnumerable<Table> tables)
+        {
+            return from table in tables
+                   select table.ToTableDTO();
         }
     }
 }
