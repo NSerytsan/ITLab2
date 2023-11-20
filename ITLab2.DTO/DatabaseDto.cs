@@ -9,6 +9,7 @@
     public class DatabaseDTO : BaseDatabaseDTO
     {
         public int Id { get; set; }
+        public IEnumerable<TableDTO>? Tables { get; set; } = [];
     }
 
     public class CreateDatabaseDTO : BaseDatabaseDTO
