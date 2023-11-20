@@ -5,10 +5,15 @@ VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITLab2.WebAPI", "ITLab2.WebAPI\ITLab2.WebAPI.csproj", "{8A961DB8-A9C2-4D18-AD72-395C98914E32}"
 	ProjectSection(ProjectDependencies) = postProject
-		{A241BC5C-E391-4C68-AEDA-34928D3719F0} = {A241BC5C-E391-4C68-AEDA-34928D3719F0}
+		{A0A98644-309F-42DD-945E-8B98554507D0} = {A0A98644-309F-42DD-945E-8B98554507D0}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITLab2.Data", "ITLab2.Data\ITLab2.Data.csproj", "{A241BC5C-E391-4C68-AEDA-34928D3719F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITLab2.Database", "ITLab2.Database\ITLab2.Database.csproj", "{A241BC5C-E391-4C68-AEDA-34928D3719F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITLab2.DTO", "ITLab2.DTO\ITLab2.DTO.csproj", "{A0A98644-309F-42DD-945E-8B98554507D0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A241BC5C-E391-4C68-AEDA-34928D3719F0} = {A241BC5C-E391-4C68-AEDA-34928D3719F0}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +29,10 @@ Global
 		{A241BC5C-E391-4C68-AEDA-34928D3719F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A241BC5C-E391-4C68-AEDA-34928D3719F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A241BC5C-E391-4C68-AEDA-34928D3719F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0A98644-309F-42DD-945E-8B98554507D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0A98644-309F-42DD-945E-8B98554507D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0A98644-309F-42DD-945E-8B98554507D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0A98644-309F-42DD-945E-8B98554507D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

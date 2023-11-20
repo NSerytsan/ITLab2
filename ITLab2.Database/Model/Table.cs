@@ -1,4 +1,4 @@
-﻿namespace ITLab2.Data
+﻿namespace ITLab2.Data.Model
 {
     public class Table(Database database)
     {

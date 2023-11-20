@@ -1,9 +1,8 @@
-﻿namespace ITLab2.Data
+﻿namespace ITLab2.DTO
 {
-    public class Column
+    public class DatabaseDto
     {
         public int Id { get; set; }
         public required string Name { get; set; }
-        public required Type Type { get; set; }
     }
 }
