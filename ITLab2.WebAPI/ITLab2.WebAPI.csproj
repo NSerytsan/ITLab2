@@ -14,4 +14,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ITLab2.Database\ITLab2.Database.csproj" />
+    <ProjectReference Include="..\ITLab2.DTO\ITLab2.DTO.csproj" />
+  </ItemGroup>
+
 </Project>

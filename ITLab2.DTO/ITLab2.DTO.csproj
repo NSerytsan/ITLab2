@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ITLab2.Database\ITLab2.Database.csproj" />
+  </ItemGroup>
+
 </Project>

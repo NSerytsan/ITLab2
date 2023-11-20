@@ -1,7 +1,12 @@
+using ITLab2.Data.Model;
+using ITLab2.Data.Storage;
+using ITLab2.DTO;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddDbContext<DatabaseStorage>(opt => opt.UseInMemoryDatabase("DBMS"));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -12,6 +17,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
 }
 
 app.UseHttpsRedirection();
@@ -20,9 +26,7 @@ var databases = app.MapGroup("/database").WithOpenApi();
 
 databases.MapGet("", getAllDatabases);
 
-databases.MapGet("{dbId:int}", (int dbId) =>
-{
-});
+databases.MapGet("{dbId:int}", GetDatabase);
 
 databases.MapPost("", () =>
 {
@@ -82,7 +86,15 @@ rows.MapDelete("{rowId:int}", (int dbId, int tabId, int rowId) =>
 
 app.Run();
 
-static async Task<IResult> getAllDatabases()
+static async Task<IResult> getAllDatabases(DatabaseStorage repo)
 {
-    return TypedResults.Ok(new List<string>());
+    return TypedResults.Ok(await repo.Databases.ToArrayAsync());
+}
+
+static async Task<IResult> GetDatabase(int id, DatabaseStorage repo)
+{
+    return await repo.Databases.FindAsync(id)
+        is Database database
+            ? TypedResults.Ok(new DatabaseDto(database))
+            : TypedResults.NotFound();
 }
