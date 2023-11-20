@@ -1,9 +1,17 @@
-﻿namespace ITLab2.Data.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ITLab2.Data.Model
 {
     public class Column
     {
+        [Key]
         public int Id { get; set; }
-        public required string Name { get; set; }
-        public required Type Type { get; set; }
+        [Required]
+        public string? Name { get; set; }
+        [Required]
+        public string? Type { get; set; }
+        [Required]
+        public int TableId {  get; set; }
+        public virtual Table? Table { get; set; }
     }
 }

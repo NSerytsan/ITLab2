@@ -6,7 +6,6 @@ namespace ITLab2.DTO
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-
         public DatabaseDTO() { }
         public DatabaseDTO(Database database) => (Id, Name) = (database.Id, database.Name);
     }

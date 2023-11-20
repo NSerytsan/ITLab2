@@ -1,4 +1,5 @@
 ﻿using ITLab2.Data.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace ITLab2.Data.Repository
@@ -31,7 +32,11 @@ namespace ITLab2.Data.Repository
 
         public void Delete(int id)
         {
-            _storage.Databases.Where(database => database.Id == id).ExecuteDelete();
+            if (_storage.Databases.Find(id) is Database database)
+            {
+                _storage.Databases.Remove(database);
+                _storage.SaveChanges();
+            }
         }
     }
 }
