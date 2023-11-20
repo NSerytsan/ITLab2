@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ITLab2.Database\ITLab2.Data.csproj" />
+    <ProjectReference Include="..\ITLab2.Data\ITLab2.Data.csproj" />
   </ItemGroup>
 
 </Project>
