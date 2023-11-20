@@ -16,63 +16,93 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/databases", () => { })
+app.MapGet("/databases", () =>
+ {
+ })
 .WithName("GetDataBases")
 .WithOpenApi();
 
-app.MapGet("/databases/{dbId}", (string dbId) => { })
+app.MapGet("/databases/{dbId}", (string dbId) =>
+{
+})
 .WithName("GetDataBase")
 .WithOpenApi();
 
-app.MapPost("/databases", () => { })
-    .WithName("CreateDatabase").
-    WithOpenApi();
+app.MapPost("/databases", () =>
+{
+})
+.WithName("CreateDatabase")
+.WithOpenApi();
 
-app.MapPut("/databases", () => { })
-    .WithName("UpdateDatabase").
-    WithOpenApi();
+app.MapPut("/databases", () =>
+{
+})
+.WithName("UpdateDatabase")
+.WithOpenApi();
 
-app.MapDelete("/databases/{dbId}", (string dbId) => { })
+app.MapDelete("/databases/{dbId}", (string dbId) =>
+{
+})
 .WithName("DeleteDataBase")
 .WithOpenApi();
 
-app.MapGet("/databases/{dbId}/tables", (string dbId) => { })
+app.MapGet("/databases/{dbId}/tables", (string dbId) =>
+{
+})
 .WithName("GetTables")
 .WithOpenApi();
 
-app.MapGet("/databases/{dbId}/tables/{tabId}", (string dbId, string tabId) => { })
+app.MapGet("/databases/{dbId}/tables/{tabId}", (string dbId, string tabId) =>
+{
+})
 .WithName("GetTable")
 .WithOpenApi();
 
-app.MapPost("/databases/{dbId}/tables", (string dbId) => { })
-    .WithName("CreateTable").
-    WithOpenApi();
+app.MapPost("/databases/{dbId}/tables", (string dbId) =>
+{
+})
+.WithName("CreateTable")
+.WithOpenApi();
 
-app.MapPut("/databases/{dbId}/tables", (string dbId) => { })
-    .WithName("UpdateTable").
-    WithOpenApi();
+app.MapPut("/databases/{dbId}/tables", (string dbId) =>
+{
+})
+.WithName("UpdateTable")
+.WithOpenApi();
 
-app.MapDelete("/databases/{dbId}/tablse/{tabId}", (string dbId, string tabId) => { })
+app.MapDelete("/databases/{dbId}/tablse/{tabId}", (string dbId, string tabId) =>
+{
+})
 .WithName("DeleteTable")
 .WithOpenApi();
 
-app.MapGet("/databases/{dbId}/tables/{tabId}/rows", (string dbId, string tabId) => { })
+app.MapGet("/databases/{dbId}/tables/{tabId}/rows", (string dbId, string tabId) =>
+{
+})
 .WithName("GetRows")
 .WithOpenApi();
 
-app.MapGet("/databases/{dbId}/tables/{tabId}/rows/{rowId}", (string dbId, string tabId, string rowId) => { })
+app.MapGet("/databases/{dbId}/tables/{tabId}/rows/{rowId}", (string dbId, string tabId, string rowId) =>
+{
+})
 .WithName("GetRow")
 .WithOpenApi();
 
-app.MapPost("/databases/{dbId}/tables/{tabId}/rows", (string dbId, string tabId) => { })
-    .WithName("CreateRows").
-    WithOpenApi();
+app.MapPost("/databases/{dbId}/tables/{tabId}/rows", (string dbId, string tabId) =>
+{
+})
+.WithName("CreateRows")
+.WithOpenApi();
 
-app.MapPut("/databases/{dbId}/tables/{tabId}/rows", (string dbId, string tabId) => { })
-    .WithName("UpdateRows").
-    WithOpenApi();
+app.MapPut("/databases/{dbId}/tables/{tabId}/rows", (string dbId, string tabId) =>
+{
+})
+.WithName("UpdateRows")
+.WithOpenApi();
 
-app.MapDelete("/databases/{dbId}/tablse/{tabId}/rows/{rowId}", (string dbId, string tabId, string rowId) => { })
+app.MapDelete("/databases/{dbId}/tablse/{tabId}/rows/{rowId}", (string dbId, string tabId, string rowId) =>
+{
+})
 .WithName("DeleteRows")
 .WithOpenApi();
 
