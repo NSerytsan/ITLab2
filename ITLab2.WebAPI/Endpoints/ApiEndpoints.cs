@@ -2,14 +2,15 @@
 using ITLab2.Data.Repository;
 using ITLab2.DTO;
 using ITLab2.DTO.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITLab2.WebAPI.Endpoints
 {
-    public static class ApiEndpoints
+    public static class ApiEndPoints
     {
-        public static RouteGroupBuilder MapApiEndpoints(this IEndpointRouteBuilder routes)
+        public static void Map(WebApplication app)
         {
-            var databasesGroup = routes.MapGroup("/database").WithOpenApi();
+            var databasesGroup = app.MapGroup("/database").WithOpenApi();
 
             databasesGroup.MapGet("", GetAllDatabases);
             databasesGroup.MapGet("{dbId:int}", GetDatabase);
@@ -60,50 +61,64 @@ namespace ITLab2.WebAPI.Endpoints
             rowsGroup.MapDelete("{rowId:int}", (int dbId, int tabId, int rowId) =>
             {
             });
-
-            return rowsGroup;
         }
 
-        static IResult GetAllDatabases(IDatabaseRepository repository)
+        private static async Task<IResult> GetAllDatabases(DatabaseStorage storage)
         {
-            return TypedResults.Ok(repository.GetAll().ToDatabaseDTOs());
+            var databases = await storage.Databases.ToListAsync();
+
+            return TypedResults.Ok(databases.ToDatabaseDTOs());
         }
 
-        static IResult GetDatabase(int dbId, IDatabaseRepository repository)
+        private static async Task<IResult> GetDatabase(int dbId, DatabaseStorage storage)
         {
-            return repository.Get(dbId)
+            return await storage.Databases.FindAsync(dbId)
                 is Database database
                     ? TypedResults.Ok(database.ToDatabaseDTO())
                     : TypedResults.NotFound();
         }
 
-        static IResult CreateDatabase(CreateDatabaseDTO newDatabaseDTO, IDatabaseRepository repository)
+        private static async Task<IResult> CreateDatabase(CreateDatabaseDTO newDatabaseDTO, DatabaseStorage storage)
         {
             var database = new Database
             {
                 Name = newDatabaseDTO.Name
             };
 
-            repository.Add(database);
+            await storage.Databases.AddAsync(database);
+
+            await storage.SaveChangesAsync();
+
             var databaseDTO = database.ToDatabaseDTO();
 
             return TypedResults.Created($"/databases/{database.Id}", databaseDTO);
         }
 
-        static IResult UpdateDatabase(int dbId, DatabaseDTO databaseDTO, IDatabaseRepository repository)
+        private static async Task<IResult> UpdateDatabase(int dbId, UpdateDatabaseDTO databaseDTO, DatabaseStorage storage)
         {
-            var database = repository.Get(dbId);
+            var database = await storage.Databases.FindAsync(dbId);
+
             if (database is null) return TypedResults.NotFound();
+
             database.Name = databaseDTO.Name;
-            repository.Update(database);
+
+            await storage.SaveChangesAsync();
 
             return TypedResults.NoContent();
         }
 
-        static IResult DeleteDatabase(int dbId, IDatabaseRepository repository)
+        private static async Task<IResult> DeleteDatabase(int dbId, DatabaseStorage storage)
         {
-            repository.Delete(dbId);
-            return TypedResults.NoContent();
+            if (await storage.Databases.FindAsync(dbId) is Database database)
+            {
+                storage.Databases.Remove(database);
+
+                await storage.SaveChangesAsync();
+
+                return TypedResults.NoContent();
+            }
+
+            return TypedResults.NotFound();
         }
     }
 }

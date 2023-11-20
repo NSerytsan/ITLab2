@@ -3,7 +3,6 @@ using ITLab2.WebAPI.Endpoints;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScoped<IDatabaseRepository, DatabaseRepository>();
 
 builder.Services.AddDbContext<DatabaseStorage>(opt => opt.UseInMemoryDatabase("DBMS"));
 
@@ -20,7 +19,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapApiEndpoints();
+ApiEndPoints.Map(app);
 
 app.Run();
 
