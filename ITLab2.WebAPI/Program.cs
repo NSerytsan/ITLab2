@@ -12,12 +12,10 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    
 }
 
 app.UseHttpsRedirection();
@@ -88,12 +86,12 @@ app.Run();
 
 static async Task<IResult> getAllDatabases(DatabaseStorage repo)
 {
-    return TypedResults.Ok(await repo.Databases.ToArrayAsync());
+    return TypedResults.Ok(await repo.Databases.Select(d => new DatabaseDto(d)).ToArrayAsync());
 }
 
-static async Task<IResult> GetDatabase(int id, DatabaseStorage repo)
+static async Task<IResult> GetDatabase(int dbId, DatabaseStorage repo)
 {
-    return await repo.Databases.FindAsync(id)
+    return await repo.Databases.FindAsync(dbId)
         is Database database
             ? TypedResults.Ok(new DatabaseDto(database))
             : TypedResults.NotFound();
