@@ -70,7 +70,7 @@ app.MapPut("/databases/{dbId}/tables", (string dbId) =>
 .WithName("UpdateTable")
 .WithOpenApi();
 
-app.MapDelete("/databases/{dbId}/tablse/{tabId}", (string dbId, string tabId) =>
+app.MapDelete("/databases/{dbId}/tables/{tabId}", (string dbId, string tabId) =>
 {
 })
 .WithName("DeleteTable")
@@ -100,7 +100,7 @@ app.MapPut("/databases/{dbId}/tables/{tabId}/rows", (string dbId, string tabId) 
 .WithName("UpdateRows")
 .WithOpenApi();
 
-app.MapDelete("/databases/{dbId}/tablse/{tabId}/rows/{rowId}", (string dbId, string tabId, string rowId) =>
+app.MapDelete("/databases/{dbId}/tables/{tabId}/rows/{rowId}", (string dbId, string tabId, string rowId) =>
 {
 })
 .WithName("DeleteRows")
