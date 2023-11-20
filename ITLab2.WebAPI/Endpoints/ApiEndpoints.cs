@@ -20,9 +20,7 @@ namespace ITLab2.WebAPI.Endpoints
 
             var tablesGroup = databasesGroup.MapGroup("{dbId:int}/tables");
 
-            tablesGroup.MapGet("", (int dbId) =>
-            {
-            });
+            tablesGroup.MapGet("", GetAllTables);
 
             tablesGroup.MapGet("{tabId:int}", (int dbId, int tabId) =>
             {
@@ -119,6 +117,13 @@ namespace ITLab2.WebAPI.Endpoints
             }
 
             return TypedResults.NotFound();
+        }
+
+        private static async Task<IResult> GetAllTables(DatabaseStorage storage)
+        {
+            var tables = await storage.Tables.ToListAsync();
+
+            return TypedResults.Ok(tables);
         }
     }
 }
