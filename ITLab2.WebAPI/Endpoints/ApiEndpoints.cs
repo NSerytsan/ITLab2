@@ -1,6 +1,7 @@
 ﻿using ITLab2.Data.Model;
 using ITLab2.Data.Repository;
 using ITLab2.DTO;
+using ITLab2.DTO.Extensions;
 
 namespace ITLab2.WebAPI.Endpoints
 {
@@ -65,14 +66,14 @@ namespace ITLab2.WebAPI.Endpoints
 
         static IResult GetAllDatabases(IDatabaseRepository repository)
         {
-            return TypedResults.Ok(repository.GetAll().Select(d => new DatabaseDTO(d)).ToList());
+            return TypedResults.Ok(repository.GetAll().ToDatabaseDTOs());
         }
 
         static IResult GetDatabase(int dbId, IDatabaseRepository repository)
         {
             return repository.Get(dbId)
                 is Database database
-                    ? TypedResults.Ok(new DatabaseDTO(database))
+                    ? TypedResults.Ok(database.ToDatabaseDTO())
                     : TypedResults.NotFound();
         }
 
@@ -84,12 +85,12 @@ namespace ITLab2.WebAPI.Endpoints
             };
 
             repository.Add(database);
-            var databaseDTO = new DatabaseDTO(database);
+            var databaseDTO = database.ToDatabaseDTO();
 
             return TypedResults.Created($"/databases/{database.Id}", databaseDTO);
         }
 
-        static IResult UpdateDatabase(int dbId, UpdateDatabaseDTO databaseDTO, IDatabaseRepository repository)
+        static IResult UpdateDatabase(int dbId, DatabaseDTO databaseDTO, IDatabaseRepository repository)
         {
             var database = repository.Get(dbId);
             if (database is null) return TypedResults.NotFound();

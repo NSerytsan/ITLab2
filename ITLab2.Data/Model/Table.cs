@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ITLab2.Data.Model
 {
@@ -10,7 +11,7 @@ namespace ITLab2.Data.Model
         public string? Name { get; set; }
         public ICollection<Column>? Columns { get; set; }
         [Required]
-        public int DatabaseId { get; set; }
+        [ForeignKey("DatabaseId")]
         public virtual Database? Database { get; set; }
     }
 }

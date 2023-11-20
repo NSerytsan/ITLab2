@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ITLab2.Data.Model
 {
@@ -11,7 +12,7 @@ namespace ITLab2.Data.Model
         [Required]
         public string? Type { get; set; }
         [Required]
-        public int TableId { get; set; }
+        [ForeignKey("TableId")]
         public virtual Table? Table { get; set; }
     }
 }
