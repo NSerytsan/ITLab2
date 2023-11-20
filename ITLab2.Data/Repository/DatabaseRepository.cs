@@ -1,5 +1,4 @@
 ﻿using ITLab2.Data.Model;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace ITLab2.Data.Repository

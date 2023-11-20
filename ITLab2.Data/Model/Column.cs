@@ -11,7 +11,7 @@ namespace ITLab2.Data.Model
         [Required]
         public string? Type { get; set; }
         [Required]
-        public int TableId {  get; set; }
+        public int TableId { get; set; }
         public virtual Table? Table { get; set; }
     }
 }
