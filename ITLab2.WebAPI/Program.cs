@@ -18,9 +18,7 @@ app.UseHttpsRedirection();
 
 var databases = app.MapGroup("/database").WithOpenApi();
 
-databases.MapGet("", () =>
- {
- });
+databases.MapGet("", getAllDatabases);
 
 databases.MapGet("{dbId:int}", (int dbId) =>
 {
@@ -83,3 +81,8 @@ rows.MapDelete("{rowId:int}", (int dbId, int tabId, int rowId) =>
 });
 
 app.Run();
+
+static async Task<IResult> getAllDatabases()
+{
+    return TypedResults.Ok(new List<string>());
+}
