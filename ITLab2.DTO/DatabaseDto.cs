@@ -2,12 +2,12 @@
 
 namespace ITLab2.DTO
 {
-    public class DatabaseDto
+    public class DatabaseDTO
     {
         public int Id { get; set; }
         public string? Name { get; set; }
 
-        public DatabaseDto() { }
-        public DatabaseDto(Database database) => (Id, Name) = (database.Id, database.Name);
+        public DatabaseDTO() { }
+        public DatabaseDTO(Database database) => (Id, Name) = (database.Id, database.Name);
     }
 }

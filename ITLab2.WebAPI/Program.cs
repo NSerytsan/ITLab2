@@ -23,12 +23,8 @@ app.UseHttpsRedirection();
 var databases = app.MapGroup("/database").WithOpenApi();
 
 databases.MapGet("", getAllDatabases);
-
 databases.MapGet("{dbId:int}", GetDatabase);
-
-databases.MapPost("", () =>
-{
-});
+databases.MapPost("", CreateDatabase);
 
 databases.MapPut("{dbId:int}", (int dbId) =>
 {
@@ -86,13 +82,28 @@ app.Run();
 
 static async Task<IResult> getAllDatabases(DatabaseStorage repo)
 {
-    return TypedResults.Ok(await repo.Databases.Select(d => new DatabaseDto(d)).ToArrayAsync());
+    return TypedResults.Ok(await repo.Databases.Select(d => new DatabaseDTO(d)).ToArrayAsync());
 }
 
 static async Task<IResult> GetDatabase(int dbId, DatabaseStorage repo)
 {
     return await repo.Databases.FindAsync(dbId)
         is Database database
-            ? TypedResults.Ok(new DatabaseDto(database))
+            ? TypedResults.Ok(new DatabaseDTO(database))
             : TypedResults.NotFound();
+}
+
+static async Task<IResult> CreateDatabase(DatabaseDTO databaseDTO, DatabaseStorage repo)
+{
+    var database = new Database
+    {
+        Name = databaseDTO.Name
+    };
+
+    repo.Databases.Add(database);
+    await repo.SaveChangesAsync();
+
+    databaseDTO = new DatabaseDTO(database);
+
+    return TypedResults.Created($"/databases/{database.Id}", databaseDTO);
 }
