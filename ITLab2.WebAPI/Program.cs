@@ -1,5 +1,5 @@
 using ITLab2.Data.Model;
-using ITLab2.Data.Storage;
+using ITLab2.Data.Repository;
 using ITLab2.DTO;
 using Microsoft.EntityFrameworkCore;
 
