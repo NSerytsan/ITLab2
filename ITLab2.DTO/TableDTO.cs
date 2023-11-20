@@ -1,13 +1,17 @@
 ﻿namespace ITLab2.DTO
 {
-    public class TableDTO
+
+    public abstract class BaseTableDTO
     {
-        public int Id { get; set; }
         public string? Name { get; set; }
     }
 
-    public class CreateTableDTO
+    public class TableDTO : BaseTableDTO
     {
-        public string? Name { get; set; }
+        public int Id { get; set; }
+    }
+
+    public class CreateTableDTO : BaseTableDTO
+    {
     }
 }
