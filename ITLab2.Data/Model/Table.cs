@@ -9,7 +9,7 @@ namespace ITLab2.Data.Model
         public int Id { get; set; }
         [Required]
         public string? Name { get; set; }
-        public ICollection<Column>? Columns { get; set; }
+        public virtual ICollection<Column>? Columns { get; set; }
         [Required]
         [ForeignKey("DatabaseId")]
         public virtual Database? Database { get; set; }

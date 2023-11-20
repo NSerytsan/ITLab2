@@ -8,6 +8,6 @@ namespace ITLab2.Data.Model
         public int Id { get; set; }
         [Required]
         public string? Name { get; set; }
-        public ICollection<Table>? Tables { get; set; }
+        public virtual ICollection<Table>? Tables { get; set; }
     }
 }
