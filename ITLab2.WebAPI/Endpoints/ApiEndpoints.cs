@@ -247,7 +247,9 @@ namespace ITLab2.WebAPI.Endpoints
             if (await storage.Tables.Where(t => t.Database.Name.Equals(dbName))
                 .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is not Table table) return TypedResults.NotFound();
 
-            return TypedResults.Ok();
+            var rows = await storage.Rows.Where(r => r.Table.Id == table.Id).ToArrayAsync();
+
+            return TypedResults.Ok(rows.ToRowDTOs());
         }
 
         private static async Task<IResult> GetRow(string dbName, string tableName, int rowId, DatabaseStorage storage)
