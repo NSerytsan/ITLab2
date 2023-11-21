@@ -293,10 +293,20 @@ namespace ITLab2.WebAPI.Endpoints
 
         private static async Task<IResult> DeleteRow(string dbName, string tableName, int rowId, DatabaseStorage storage)
         {
-            if (await storage.Tables.Where(t => t.Database.Name.Equals(dbName))
-                .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is not Table table) return TypedResults.NotFound();
+            if (await storage.Rows.Include(r => r.Table)
+                                .ThenInclude(t => t.Database)
+                                .FirstOrDefaultAsync(r => r.Id == rowId
+                                                    && r.Table.Name.Equals(tableName)
+                                                    && r.Table.Database.Name.Equals(dbName)) is Row row)
+            {
+                storage.Rows.Remove(row);
 
-            return TypedResults.NoContent();
+                await storage.SaveChangesAsync();
+
+                return TypedResults.NoContent();
+            }
+
+            return TypedResults.NotFound();
         }
     }
 }
