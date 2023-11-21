@@ -49,7 +49,7 @@ namespace ITLab2.WebAPI.Endpoints
 
         private static async Task<IResult> GetDatabase(string dbName, DatabaseStorage storage)
         {
-            return await storage.Databases.FindAsync(dbName)
+            return await storage.Databases.Include(d => d.Tables).FirstOrDefaultAsync(d => d.Name.Equals(dbName))
                 is Database database
                     ? TypedResults.Ok(database.ToDatabaseDTO())
                     : TypedResults.NotFound();
