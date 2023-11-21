@@ -28,14 +28,8 @@ namespace ITLab2.WebAPI.Endpoints
             var columnsGroup = tablesGroup.MapGroup("{tableName}/columns");
 
             columnsGroup.MapGet("", GetAllColumns);
-
-            columnsGroup.MapGet("{colName}", (string dbName, int tabId, string colName) =>
-            {
-            });
-
-            columnsGroup.MapPost("", (string dbName, int tabId) =>
-            {
-            });
+            columnsGroup.MapGet("{colName}", GetColumn);
+            columnsGroup.MapPost("", CreateColumn);
 
             columnsGroup.MapPut("{colName}", (string dbName, int tabId, string colName) =>
             {
@@ -170,6 +164,38 @@ namespace ITLab2.WebAPI.Endpoints
                 .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is null) return TypedResults.NotFound();
 
             return TypedResults.Ok();
+        }
+
+        private static async Task<IResult> GetColumn(string dbName, string tableName, string columnName, DatabaseStorage storage)
+        {
+            if (await storage.Tables.Where(t => t.Database.Name.Equals(dbName))
+                .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is null) return TypedResults.NotFound();
+
+            return TypedResults.Ok();
+        }
+
+        private static async Task<IResult> CreateColumn(string dbName, string tableName, ColumnDTO newColumnDTO, DatabaseStorage storage)
+        {
+            var database = await storage.Databases.FindAsync(dbName);
+            if (database is null) return TypedResults.NotFound();
+            
+            var table = await storage.Tables.FirstOrDefaultAsync(t => t.Name.Equals(tableName));
+            if (table is null) return TypedResults.NotFound();
+
+            var column = new Column
+            {
+                Name = newColumnDTO.Name,
+                Type = newColumnDTO.Type,
+                Table = table
+            };
+
+            await storage.Columns.AddAsync(column);
+
+            await storage.SaveChangesAsync();
+
+            var columnDTO = column.ToColumnDTO();
+
+            return TypedResults.Created($"/databases/{database.Name}/tablses/{table.Name}/columns/{column.Name}", columnDTO);
         }
     }
 }

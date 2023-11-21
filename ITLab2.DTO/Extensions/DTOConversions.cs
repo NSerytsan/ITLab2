@@ -39,5 +39,21 @@ namespace ITLab2.DTO.Extensions
             return from table in tables
                    select table.ToTableDTO();
         }
+
+        public static ColumnDTO ToColumnDTO(this Column column)
+        {
+            return new ColumnDTO()
+            {
+                Id = column.Id,
+                Name = column.Name,
+                Type = column.Type
+            };
+        }
+
+        public static IEnumerable<ColumnDTO> ToColumnDTOs(this IEnumerable<Column> columns)
+        {
+            return from column in columns
+                   select column.ToColumnDTO();
+        }
     }
 }

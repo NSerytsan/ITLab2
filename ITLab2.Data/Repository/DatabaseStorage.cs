@@ -7,5 +7,6 @@ namespace ITLab2.Data.Repository
     {
         public DbSet<Database> Databases => Set<Database>();
         public DbSet<Table> Tables => Set<Table>();
+        public DbSet<Column> Columns => Set<Column>();
     }
 }
