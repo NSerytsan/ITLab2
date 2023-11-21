@@ -255,7 +255,7 @@ namespace ITLab2.WebAPI.Endpoints
             if (await storage.Tables.Where(t => t.Database.Name.Equals(dbName))
                 .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is not Table table) return TypedResults.NotFound();
 
-            return await storage.Rows.Where(r => r.Id == rowId && r.Table.Id == table.Id).FirstAsync()
+            return await storage.Rows.FirstOrDefaultAsync(r => r.Id == rowId && r.Table.Id == table.Id)
                      is Row row
                         ? TypedResults.Ok(row.ToRowDTO())
                         : TypedResults.NotFound();
@@ -276,7 +276,9 @@ namespace ITLab2.WebAPI.Endpoints
 
             await storage.SaveChangesAsync();
 
-            return TypedResults.NoContent();
+            var rowDTO = row.ToRowDTO();
+
+            return TypedResults.Created($"/databases/{dbName}/tablses/{tableName}/columns/{row.Id}", rowDTO);
         }
 
         private static async Task<IResult> UpdateRow(string dbName, string tableName, int rowId, UpdateColumnDTO columnDTO, DatabaseStorage storage)
