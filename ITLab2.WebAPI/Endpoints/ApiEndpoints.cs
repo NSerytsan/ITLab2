@@ -28,7 +28,7 @@ namespace ITLab2.WebAPI.Endpoints
             var columnsGroup = tablesGroup.MapGroup("{tableName}/columns");
 
             columnsGroup.MapGet("", GetAllColumns);
-            columnsGroup.MapGet("{colName}", GetColumn);
+            columnsGroup.MapGet("{columnName}", GetColumn);
             columnsGroup.MapPost("", CreateColumn);
 
             columnsGroup.MapPut("{colName}", (string dbName, int tabId, string colName) =>
@@ -161,9 +161,11 @@ namespace ITLab2.WebAPI.Endpoints
         private static async Task<IResult> GetAllColumns(string dbName, string tableName, DatabaseStorage storage)
         {
             if (await storage.Tables.Where(t => t.Database.Name.Equals(dbName))
-                .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is null) return TypedResults.NotFound();
+                .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is not Table table) return TypedResults.NotFound();
 
-            return TypedResults.Ok();
+            var columns = await storage.Columns.Where(c => c.Table.Id == table.Id).ToArrayAsync();
+
+            return TypedResults.Ok(columns.ToColumnDTOs());
         }
 
         private static async Task<IResult> GetColumn(string dbName, string tableName, string columnName, DatabaseStorage storage)
@@ -171,14 +173,17 @@ namespace ITLab2.WebAPI.Endpoints
             if (await storage.Tables.Where(t => t.Database.Name.Equals(dbName))
                 .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is null) return TypedResults.NotFound();
 
-            return TypedResults.Ok();
+            return await storage.Columns.FirstOrDefaultAsync(t => t.Name.Equals(columnName))
+                is Column column
+                    ? TypedResults.Ok(column.ToColumnDTO())
+                    : TypedResults.NotFound();
         }
 
         private static async Task<IResult> CreateColumn(string dbName, string tableName, ColumnDTO newColumnDTO, DatabaseStorage storage)
         {
             var database = await storage.Databases.FindAsync(dbName);
             if (database is null) return TypedResults.NotFound();
-            
+
             var table = await storage.Tables.FirstOrDefaultAsync(t => t.Name.Equals(tableName));
             if (table is null) return TypedResults.NotFound();
 

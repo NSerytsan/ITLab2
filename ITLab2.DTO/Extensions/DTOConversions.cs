@@ -30,7 +30,15 @@ namespace ITLab2.DTO.Extensions
             return new TableDTO()
             {
                 Id = table.Id,
-                Name = table.Name
+                Name = table.Name,
+                Columns = (table.Columns is not null) ?
+                from column in table.Columns
+                select new ColumnDTO()
+                {
+                    Id = column.Id,
+                    Name = column.Name,
+                    Type = column.Type
+                } : []
             };
         }
 

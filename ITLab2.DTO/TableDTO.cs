@@ -10,7 +10,7 @@ namespace ITLab2.DTO
     public class TableDTO : BaseTableDTO
     {
         public int Id { get; set; }
-        public IEnumerable<Column> Columns { get; set; } = [];
+        public IEnumerable<ColumnDTO> Columns { get; set; } = [];
     }
 
     public class CreateTableDTO : BaseTableDTO
