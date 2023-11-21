@@ -8,9 +8,9 @@ namespace ITLab2.Data.Model
         [Key]
         public int Id { get; set; }
         [Required]
-        public string? Name { get; set; }
+        public required string Name { get; set; }
         [Required]
-        public string? Type { get; set; }
+        public required string Type { get; set; }
         [Required]
         [ForeignKey("TableId")]
         public virtual required Table Table { get; set; }

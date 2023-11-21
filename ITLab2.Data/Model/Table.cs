@@ -8,10 +8,10 @@ namespace ITLab2.Data.Model
         [Key]
         public int Id { get; set; }
         [Required]
-        public string? Name { get; set; }
+        public required string Name { get; set; }
         public virtual ICollection<Column>? Columns { get; set; }
         [Required]
-        [ForeignKey("DatabaseId")]
+        [ForeignKey("DatabaseName")]
         public virtual required Database Database { get; set; }
     }
 }

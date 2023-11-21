@@ -20,30 +20,30 @@ namespace ITLab2.WebAPI.Endpoints
             var tablesGroup = databasesGroup.MapGroup("{dbName}/tables");
 
             tablesGroup.MapGet("", GetAllTables);
-            tablesGroup.MapGet("{tabId:int}", GetTable);
+            tablesGroup.MapGet("{tableName}", GetTable);
             tablesGroup.MapPost("", CreateTable);
-            tablesGroup.MapPut("{tabId:int}", UpdateTable);
-            tablesGroup.MapDelete("{tabId:int}", DeleteTable);
+            tablesGroup.MapPut("{tableName}", UpdateTable);
+            tablesGroup.MapDelete("{tableName}", DeleteTable);
 
-            var rowsGroup = tablesGroup.MapGroup("{tabId:int}/rows");
+            var columnsGroup = tablesGroup.MapGroup("{tabId:int}/columns");
 
-            rowsGroup.MapGet("", (int dbId, int tabId) =>
+            columnsGroup.MapGet("", (string dbName, int tabId) =>
             {
             });
 
-            rowsGroup.MapGet("{rowId:int}", (int dbId, int tabId, int rowId) =>
+            columnsGroup.MapGet("{colName}", (string dbName, int tabId, string colName) =>
             {
             });
 
-            rowsGroup.MapPost("", (int dbId, int tabId) =>
+            columnsGroup.MapPost("", (string dbName, int tabId) =>
             {
             });
 
-            rowsGroup.MapPut("{rowId:int}", (int dbId, int tabId, int rowId) =>
+            columnsGroup.MapPut("{colName}", (string dbName, int tabId, string colName) =>
             {
             });
 
-            rowsGroup.MapDelete("{rowId:int}", (int dbId, int tabId, int rowId) =>
+            columnsGroup.MapDelete("{colName}", (string dbName, int tabId, string colName) =>
             {
             });
         }
@@ -104,11 +104,11 @@ namespace ITLab2.WebAPI.Endpoints
             return TypedResults.Ok(tables.ToTableDTOs());
         }
 
-        private static async Task<IResult> GetTable(string dbName, int tabId, DatabaseStorage storage)
+        private static async Task<IResult> GetTable(string dbName, string tableName, DatabaseStorage storage)
         {
             if (await storage.Databases.FindAsync(dbName) is null) return TypedResults.NotFound();
 
-            return await storage.Tables.FindAsync(tabId)
+            return await storage.Tables.FirstOrDefaultAsync(t => t.Name.Equals(tableName))
                 is Table table
                     ? TypedResults.Ok(table.ToTableDTO())
                     : TypedResults.NotFound();
@@ -135,9 +135,9 @@ namespace ITLab2.WebAPI.Endpoints
             return TypedResults.Created($"/databases/{database.Name}/tablses/{table.Id}", tableDTO);
         }
 
-        private static async Task<IResult> UpdateTable(string dbName, int tabId, UpdateTableDTO tableDTO, DatabaseStorage storage)
+        private static async Task<IResult> UpdateTable(string dbName, string tableName, UpdateTableDTO tableDTO, DatabaseStorage storage)
         {
-            var table = await storage.Tables.Include(t => t.Database).FirstOrDefaultAsync(t => t.Id == tabId);
+            var table = await storage.Tables.Include(t => t.Database).FirstOrDefaultAsync(t => t.Name.Equals(tableName));
 
             if (table is null) return TypedResults.NotFound();
 
@@ -150,11 +150,11 @@ namespace ITLab2.WebAPI.Endpoints
             return TypedResults.NoContent();
         }
 
-        private static async Task<IResult> DeleteTable(string dbName, int tabId, DatabaseStorage storage)
+        private static async Task<IResult> DeleteTable(string dbName, string tableName, DatabaseStorage storage)
         {
             if (await storage.Databases.FindAsync(dbName) is null) TypedResults.NotFound();
 
-            if (await storage.Tables.FindAsync(tabId) is Table table)
+            if (await storage.Tables.FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is Table table)
             {
                 storage.Tables.Remove(table);
 
