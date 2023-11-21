@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<DatabaseStorage>(opt => opt.UseInMemoryDatabase("DBMS"));
+builder.Services.AddDbContext<DatabaseStorage>(opt => opt.UseSqlite("Data Source=DBMS.db"));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

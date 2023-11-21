@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+ITLab2.WebAPI/DBMS.db
+ITLab2.WebAPI/DBMS.db-shm
+.gitignore
+ITLab2.WebAPI/DBMS.db-wal
