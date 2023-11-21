@@ -97,7 +97,7 @@ namespace ITLab2.WebAPI.Endpoints
 
         private static async Task<IResult> GetAllTables(string dbName, DatabaseStorage storage)
         {
-            if (await storage.Databases.FindAsync(dbName) is null) return TypedResults.BadRequest();
+            if (await storage.Databases.FindAsync(dbName) is null) return TypedResults.NotFound();
 
             var tables = await storage.Tables.Where(t => t.Database.Name.Equals(dbName)).ToArrayAsync();
 
@@ -106,7 +106,7 @@ namespace ITLab2.WebAPI.Endpoints
 
         private static async Task<IResult> GetTable(string dbName, int tabId, DatabaseStorage storage)
         {
-            if (await storage.Databases.FindAsync(dbName) is null) return TypedResults.BadRequest();
+            if (await storage.Databases.FindAsync(dbName) is null) return TypedResults.NotFound();
 
             return await storage.Tables.FindAsync(tabId)
                 is Table table
@@ -137,11 +137,11 @@ namespace ITLab2.WebAPI.Endpoints
 
         private static async Task<IResult> UpdateTable(string dbName, int tabId, UpdateTableDTO tableDTO, DatabaseStorage storage)
         {
-            var table = await storage.Tables.FindAsync(tabId);
+            var table = await storage.Tables.Include(t => t.Database).FirstOrDefaultAsync(t => t.Id == tabId);
 
             if (table is null) return TypedResults.NotFound();
 
-            if (!table.Database.Name.Equals(dbName)) return TypedResults.BadRequest();
+            if (!table.Database.Name.Equals(dbName)) return TypedResults.NotFound();
 
             table.Name = tableDTO.Name;
 
@@ -152,7 +152,7 @@ namespace ITLab2.WebAPI.Endpoints
 
         private static async Task<IResult> DeleteTable(string dbName, int tabId, DatabaseStorage storage)
         {
-            if (await storage.Databases.FindAsync(dbName) is null) TypedResults.BadRequest();
+            if (await storage.Databases.FindAsync(dbName) is null) TypedResults.NotFound();
 
             if (await storage.Tables.FindAsync(tabId) is Table table)
             {
