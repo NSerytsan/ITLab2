@@ -1,4 +1,5 @@
-﻿using ITLab2.Data.Model;
+﻿using System.Text.Json;
+using ITLab2.Data.Model;
 
 namespace ITLab2.DTO.Extensions
 {
@@ -62,6 +63,22 @@ namespace ITLab2.DTO.Extensions
         {
             return from column in columns
                    select column.ToColumnDTO();
+        }
+
+        public static RowDTO ToRowDTO(this Row row)
+        {
+            Dictionary<int, object>? dict = JsonSerializer.Deserialize<Dictionary<int, object>>(row.ItemsJson);
+            return new RowDTO()
+            {
+                Id = row.Id,
+                Items = (dict is null) ? [] : dict
+            };
+        }
+
+        public static IEnumerable<RowDTO> ToRowDTOs(this IEnumerable<Row> rows)
+        {
+            return from row in rows
+                   select row.ToRowDTO();
         }
     }
 }

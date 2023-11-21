@@ -1,4 +1,5 @@
-﻿using ITLab2.Data.Model;
+﻿using System.Text.Json;
+using ITLab2.Data.Model;
 using ITLab2.Data.Repository;
 using ITLab2.DTO;
 using ITLab2.DTO.Extensions;
@@ -264,7 +265,7 @@ namespace ITLab2.WebAPI.Endpoints
 
             var row = new Row
             {
-                Items = newRowDTO.Items,
+                ItemsJson = JsonSerializer.Serialize<Dictionary<int, object>>(newRowDTO.Items),
                 Table = table
             };
 
