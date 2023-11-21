@@ -257,7 +257,7 @@ namespace ITLab2.WebAPI.Endpoints
             return TypedResults.Ok();
         }
 
-        private static async Task<IResult> CreateRow(string dbName, string tableName, RowDTO newRowDTO, DatabaseStorage storage)
+        private static async Task<IResult> CreateRow(string dbName, string tableName, CreateRowDTO newRowDTO, DatabaseStorage storage)
         {
             if (await storage.Tables.Where(t => t.Database.Name.Equals(dbName))
                 .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is not Table table) return TypedResults.NotFound();
