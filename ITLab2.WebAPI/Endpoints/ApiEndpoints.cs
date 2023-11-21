@@ -262,6 +262,16 @@ namespace ITLab2.WebAPI.Endpoints
             if (await storage.Tables.Where(t => t.Database.Name.Equals(dbName))
                 .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is not Table table) return TypedResults.NotFound();
 
+            var row = new Row
+            {
+                Items = newRowDTO.Items,
+                Table = table
+            };
+
+            await storage.Rows.AddAsync(row);
+
+            await storage.SaveChangesAsync();
+
             return TypedResults.NoContent();
         }
 
