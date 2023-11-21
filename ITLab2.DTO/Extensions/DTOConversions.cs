@@ -8,7 +8,6 @@ namespace ITLab2.DTO.Extensions
         {
             return new DatabaseDTO()
             {
-                Id = database.Id,
                 Name = database.Name,
                 Tables = (database.Tables is not null) ?
                 from table in database.Tables

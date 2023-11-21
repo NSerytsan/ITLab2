@@ -13,21 +13,17 @@ namespace ITLab2.WebAPI.Endpoints
             var databasesGroup = app.MapGroup("/database").WithOpenApi();
 
             databasesGroup.MapGet("", GetAllDatabases);
-            databasesGroup.MapGet("{dbId:int}", GetDatabase);
+            databasesGroup.MapGet("{dbName}", GetDatabase);
             databasesGroup.MapPost("", CreateDatabase);
-            databasesGroup.MapPut("{dbId:int}", UpdateDatabase);
-            databasesGroup.MapDelete("{dbId:int}", DeleteDatabase);
+            databasesGroup.MapDelete("{dbName}", DeleteDatabase);
 
-            var tablesGroup = databasesGroup.MapGroup("{dbId:int}/tables");
+            var tablesGroup = databasesGroup.MapGroup("{dbName}/tables");
 
             tablesGroup.MapGet("", GetAllTables);
             tablesGroup.MapGet("{tabId:int}", GetTable);
             tablesGroup.MapPost("", CreateTable);
             tablesGroup.MapPut("{tabId:int}", UpdateTable);
-
-            tablesGroup.MapDelete("{tabId:int}", (int dbId, int tabId) =>
-            {
-            });
+            tablesGroup.MapDelete("{tabId:int}", DeleteTable);
 
             var rowsGroup = tablesGroup.MapGroup("{tabId:int}/rows");
 
@@ -59,9 +55,9 @@ namespace ITLab2.WebAPI.Endpoints
             return TypedResults.Ok(databases.ToDatabaseDTOs());
         }
 
-        private static async Task<IResult> GetDatabase(int dbId, DatabaseStorage storage)
+        private static async Task<IResult> GetDatabase(string dbName, DatabaseStorage storage)
         {
-            return await storage.Databases.FindAsync(dbId)
+            return await storage.Databases.FindAsync(dbName)
                 is Database database
                     ? TypedResults.Ok(database.ToDatabaseDTO())
                     : TypedResults.NotFound();
@@ -69,6 +65,8 @@ namespace ITLab2.WebAPI.Endpoints
 
         private static async Task<IResult> CreateDatabase(CreateDatabaseDTO newDatabaseDTO, DatabaseStorage storage)
         {
+            if (await storage.Databases.FindAsync(newDatabaseDTO.Name) is not null) return TypedResults.BadRequest();
+
             var database = new Database
             {
                 Name = newDatabaseDTO.Name
@@ -80,25 +78,12 @@ namespace ITLab2.WebAPI.Endpoints
 
             var databaseDTO = database.ToDatabaseDTO();
 
-            return TypedResults.Created($"/databases/{database.Id}", databaseDTO);
+            return TypedResults.Created($"/databases/{database.Name}", databaseDTO);
         }
 
-        private static async Task<IResult> UpdateDatabase(int dbId, UpdateDatabaseDTO databaseDTO, DatabaseStorage storage)
+        private static async Task<IResult> DeleteDatabase(string dbName, DatabaseStorage storage)
         {
-            var database = await storage.Databases.FindAsync(dbId);
-
-            if (database is null) return TypedResults.NotFound();
-
-            database.Name = databaseDTO.Name;
-
-            await storage.SaveChangesAsync();
-
-            return TypedResults.NoContent();
-        }
-
-        private static async Task<IResult> DeleteDatabase(int dbId, DatabaseStorage storage)
-        {
-            if (await storage.Databases.FindAsync(dbId) is Database database)
+            if (await storage.Databases.FindAsync(dbName) is Database database)
             {
                 storage.Databases.Remove(database);
 
@@ -110,24 +95,28 @@ namespace ITLab2.WebAPI.Endpoints
             return TypedResults.NotFound();
         }
 
-        private static async Task<IResult> GetAllTables(int dbId, DatabaseStorage storage)
+        private static async Task<IResult> GetAllTables(string dbName, DatabaseStorage storage)
         {
-            var tables = await storage.Tables.Where(t => t.Database.Id == dbId).ToArrayAsync();
+            if (await storage.Databases.FindAsync(dbName) is null) return TypedResults.BadRequest();
+
+            var tables = await storage.Tables.Where(t => t.Database.Name.Equals(dbName)).ToArrayAsync();
 
             return TypedResults.Ok(tables.ToTableDTOs());
         }
 
-        private static async Task<IResult> GetTable(int dbId, int tabId, DatabaseStorage storage)
+        private static async Task<IResult> GetTable(string dbName, int tabId, DatabaseStorage storage)
         {
+            if (await storage.Databases.FindAsync(dbName) is null) return TypedResults.BadRequest();
+
             return await storage.Tables.FindAsync(tabId)
                 is Table table
                     ? TypedResults.Ok(table.ToTableDTO())
                     : TypedResults.NotFound();
         }
 
-        private static async Task<IResult> CreateTable(int dbId, CreateTableDTO newTableDTO, DatabaseStorage storage)
+        private static async Task<IResult> CreateTable(string dbName, CreateTableDTO newTableDTO, DatabaseStorage storage)
         {
-            var database = await storage.Databases.FindAsync(dbId);
+            var database = await storage.Databases.FindAsync(dbName);
 
             if (database is null) return TypedResults.NotFound();
 
@@ -143,22 +132,38 @@ namespace ITLab2.WebAPI.Endpoints
 
             var tableDTO = table.ToTableDTO();
 
-            return TypedResults.Created($"/databases/{database.Id}/tablses/{table.Id}", tableDTO);
+            return TypedResults.Created($"/databases/{database.Name}/tablses/{table.Id}", tableDTO);
         }
 
-        private static async Task<IResult> UpdateTable(int dbId, int tabId, UpdateTableDTO tableDTO, DatabaseStorage storage)
+        private static async Task<IResult> UpdateTable(string dbName, int tabId, UpdateTableDTO tableDTO, DatabaseStorage storage)
         {
             var table = await storage.Tables.FindAsync(tabId);
 
             if (table is null) return TypedResults.NotFound();
 
-            if (table.Database.Id != dbId) return TypedResults.BadRequest();
+            if (!table.Database.Name.Equals(dbName)) return TypedResults.BadRequest();
 
             table.Name = tableDTO.Name;
 
             await storage.SaveChangesAsync();
 
             return TypedResults.NoContent();
+        }
+
+        private static async Task<IResult> DeleteTable(string dbName, int tabId, DatabaseStorage storage)
+        {
+            if (await storage.Databases.FindAsync(dbName) is null) TypedResults.BadRequest();
+
+            if (await storage.Tables.FindAsync(tabId) is Table table)
+            {
+                storage.Tables.Remove(table);
+
+                await storage.SaveChangesAsync();
+
+                return TypedResults.NoContent();
+            }
+
+            return TypedResults.NotFound();
         }
     }
 }

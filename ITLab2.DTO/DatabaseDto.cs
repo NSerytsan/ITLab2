@@ -2,12 +2,11 @@
 {
     public abstract class BaseDatabaseDTO
     {
-        public string? Name { get; set; }
+        public required string Name { get; set; }
     }
 
     public class DatabaseDTO : BaseDatabaseDTO
     {
-        public int Id { get; set; }
         public IEnumerable<TableDTO>? Tables { get; set; } = [];
     }
 
