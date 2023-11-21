@@ -30,14 +30,8 @@ namespace ITLab2.WebAPI.Endpoints
             columnsGroup.MapGet("", GetAllColumns);
             columnsGroup.MapGet("{columnName}", GetColumn);
             columnsGroup.MapPost("", CreateColumn);
-
-            columnsGroup.MapPut("{colName}", (string dbName, int tabId, string colName) =>
-            {
-            });
-
-            columnsGroup.MapDelete("{colName}", (string dbName, int tabId, string colName) =>
-            {
-            });
+            columnsGroup.MapPut("{columnName}", UpdateColumn);
+            columnsGroup.MapDelete("{columnName}", DeleteColumn);
         }
 
         private static async Task<IResult> GetAllDatabases(DatabaseStorage storage)
@@ -201,6 +195,42 @@ namespace ITLab2.WebAPI.Endpoints
             var columnDTO = column.ToColumnDTO();
 
             return TypedResults.Created($"/databases/{database.Name}/tablses/{table.Name}/columns/{column.Name}", columnDTO);
+        }
+
+        private static async Task<IResult> UpdateColumn(string dbName, string tableName, string columnName, UpdateColumnDTO columnDTO, DatabaseStorage storage)
+        {
+            var column = await storage.Columns.Include(c => c.Table)
+                                            .ThenInclude(t => t.Database)
+                                            .FirstOrDefaultAsync(c => c.Name.Equals(columnName)
+                                                              && c.Table.Name.Equals(tableName)
+                                                              && c.Table.Database.Name.Equals(dbName));
+
+            if (column is null) return TypedResults.NotFound();
+
+            column.Name = columnDTO.Name;
+            column.Type = columnDTO.Type;
+
+            await storage.SaveChangesAsync();
+
+            return TypedResults.NoContent();
+        }
+
+        private static async Task<IResult> DeleteColumn(string dbName, string tableName, string columnName, DatabaseStorage storage)
+        {
+            if (await storage.Columns.Include(c => c.Table)
+                                .ThenInclude(t => t.Database)
+                                .FirstOrDefaultAsync(c => c.Name.Equals(columnName)
+                                                    && c.Table.Name.Equals(tableName)
+                                                    && c.Table.Database.Name.Equals(dbName)) is Column column)
+            {
+                storage.Columns.Remove(column);
+
+                await storage.SaveChangesAsync();
+
+                return TypedResults.NoContent();
+            }
+
+            return TypedResults.NotFound();
         }
     }
 }
