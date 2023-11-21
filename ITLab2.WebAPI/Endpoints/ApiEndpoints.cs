@@ -32,6 +32,14 @@ namespace ITLab2.WebAPI.Endpoints
             columnsGroup.MapPost("", CreateColumn);
             columnsGroup.MapPut("{columnName}", UpdateColumn);
             columnsGroup.MapDelete("{columnName}", DeleteColumn);
+
+            var rowsGroup = tablesGroup.MapGroup("{tableName}/rows");
+
+            rowsGroup.MapGet("", GetAllRows);
+            rowsGroup.MapGet("{rowId:int}", GetRow);
+            rowsGroup.MapPost("", CreateRow);
+            rowsGroup.MapPut("{rowId:int}", UpdateRow);
+            rowsGroup.MapDelete("{rowId:int}", DeleteRow);
         }
 
         private static async Task<IResult> GetAllDatabases(DatabaseStorage storage)
@@ -231,6 +239,46 @@ namespace ITLab2.WebAPI.Endpoints
             }
 
             return TypedResults.NotFound();
+        }
+
+        private static async Task<IResult> GetAllRows(string dbName, string tableName, DatabaseStorage storage)
+        {
+            if (await storage.Tables.Where(t => t.Database.Name.Equals(dbName))
+                .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is not Table table) return TypedResults.NotFound();
+
+            return TypedResults.Ok();
+        }
+
+        private static async Task<IResult> GetRow(string dbName, string tableName, int rowId, DatabaseStorage storage)
+        {
+            if (await storage.Tables.Where(t => t.Database.Name.Equals(dbName))
+                .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is not Table table) return TypedResults.NotFound();
+
+            return TypedResults.Ok();
+        }
+
+        private static async Task<IResult> CreateRow(string dbName, string tableName, RowDTO newRowDTO, DatabaseStorage storage)
+        {
+            if (await storage.Tables.Where(t => t.Database.Name.Equals(dbName))
+                .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is not Table table) return TypedResults.NotFound();
+
+            return TypedResults.NoContent();
+        }
+
+        private static async Task<IResult> UpdateRow(string dbName, string tableName, int rowId, UpdateColumnDTO columnDTO, DatabaseStorage storage)
+        {
+            if (await storage.Tables.Where(t => t.Database.Name.Equals(dbName))
+                .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is not Table table) return TypedResults.NotFound();
+
+            return TypedResults.NoContent();
+        }
+
+        private static async Task<IResult> DeleteRow(string dbName, string tableName, int rowId, DatabaseStorage storage)
+        {
+            if (await storage.Tables.Where(t => t.Database.Name.Equals(dbName))
+                .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is not Table table) return TypedResults.NotFound();
+
+            return TypedResults.NoContent();
         }
     }
 }
