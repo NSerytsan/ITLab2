@@ -25,11 +25,9 @@ namespace ITLab2.WebAPI.Endpoints
             tablesGroup.MapPut("{tableName}", UpdateTable);
             tablesGroup.MapDelete("{tableName}", DeleteTable);
 
-            var columnsGroup = tablesGroup.MapGroup("{tabId:int}/columns");
+            var columnsGroup = tablesGroup.MapGroup("{tableName}/columns");
 
-            columnsGroup.MapGet("", (string dbName, int tabId) =>
-            {
-            });
+            columnsGroup.MapGet("", GetAllColumns);
 
             columnsGroup.MapGet("{colName}", (string dbName, int tabId, string colName) =>
             {
@@ -164,6 +162,14 @@ namespace ITLab2.WebAPI.Endpoints
             }
 
             return TypedResults.NotFound();
+        }
+
+        private static async Task<IResult> GetAllColumns(string dbName, string tableName, DatabaseStorage storage)
+        {
+            if (await storage.Tables.Where(t => t.Database.Name.Equals(dbName))
+                .FirstOrDefaultAsync(t => t.Name.Equals(tableName)) is null) return TypedResults.NotFound();
+
+            return TypedResults.Ok();
         }
     }
 }
