@@ -67,11 +67,11 @@ namespace ITLab2.DTO.Extensions
 
         public static RowDTO ToRowDTO(this Row row)
         {
-            Dictionary<int, object>? dict = JsonSerializer.Deserialize<Dictionary<int, object>>(row.ItemsJson);
+            Dictionary<int, object>? items = JsonSerializer.Deserialize<Dictionary<int, object>>(row.ItemsJson);
             return new RowDTO()
             {
                 Id = row.Id,
-                Items = (dict is null) ? [] : dict
+                Items = (items is null) ? [] : items
             };
         }
 
