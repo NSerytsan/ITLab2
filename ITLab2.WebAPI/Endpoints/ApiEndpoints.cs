@@ -23,10 +23,7 @@ namespace ITLab2.WebAPI.Endpoints
             tablesGroup.MapGet("", GetAllTables);
             tablesGroup.MapGet("{tabId:int}", GetTable);
             tablesGroup.MapPost("", CreateTable);
-
-            tablesGroup.MapPut("{tabId:int}", (int dbId, int tabId) =>
-            {
-            });
+            tablesGroup.MapPut("{tabId:int}", UpdateTable);
 
             tablesGroup.MapDelete("{tabId:int}", (int dbId, int tabId) =>
             {
@@ -147,6 +144,21 @@ namespace ITLab2.WebAPI.Endpoints
             var tableDTO = table.ToTableDTO();
 
             return TypedResults.Created($"/databases/{database.Id}/tablses/{table.Id}", tableDTO);
+        }
+
+        private static async Task<IResult> UpdateTable(int dbId, int tabId, UpdateTableDTO tableDTO, DatabaseStorage storage)
+        {
+            var table = await storage.Tables.FindAsync(tabId);
+
+            if (table is null) return TypedResults.NotFound();
+
+            if (table.Database.Id != dbId) return TypedResults.BadRequest();
+
+            table.Name = tableDTO.Name;
+
+            await storage.SaveChangesAsync();
+
+            return TypedResults.NoContent();
         }
     }
 }
