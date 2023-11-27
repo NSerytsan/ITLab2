@@ -1,9 +1,9 @@
-﻿using System.Text.Json;
-using ITLab2.Data.Model;
+﻿using ITLab2.Data.Model;
 using ITLab2.Data.Repository;
 using ITLab2.DTO;
 using ITLab2.DTO.Extensions;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace ITLab2.WebAPI.Endpoints
 {

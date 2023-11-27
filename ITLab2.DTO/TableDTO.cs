@@ -1,6 +1,4 @@
-﻿using ITLab2.Data.Model;
-
-namespace ITLab2.DTO
+﻿namespace ITLab2.DTO
 {
     public abstract class BaseTableDTO
     {

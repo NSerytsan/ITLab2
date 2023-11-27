@@ -1,5 +1,5 @@
-﻿using System.Text.Json;
-using ITLab2.Data.Model;
+﻿using ITLab2.Data.Model;
+using System.Text.Json;
 
 namespace ITLab2.DTO.Extensions
 {
