@@ -24,7 +24,7 @@ public partial class DatabasesPage : ContentPage
     {
     }
 
-    private void btnCreate_clicked(object sender, EventArgs e)
+    private void OnCreateDatabaseClicked(object sender, EventArgs e)
     {
     }
 }
