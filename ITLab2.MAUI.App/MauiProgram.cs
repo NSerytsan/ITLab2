@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using ITLab2.MAUI.App.Services;
+using ITLab2.MAUI.App.Views;
+using Microsoft.Extensions.Logging;
 
 namespace ITLab2.MAUI.App
 {
@@ -16,8 +18,11 @@ namespace ITLab2.MAUI.App
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
+            builder.Services.AddSingleton<IRestService, RestService>();
+
+            builder.Services.AddSingleton<DatabasesPage>();
 
             return builder.Build();
         }
