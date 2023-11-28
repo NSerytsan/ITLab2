@@ -1,5 +1,6 @@
 using ITLab2.MAUI.App.DTO;
 using ITLab2.MAUI.App.Services;
+using System.Collections.ObjectModel;
 
 namespace ITLab2.MAUI.App.Views;
 
@@ -12,10 +13,11 @@ public partial class DatabasesPage : ContentPage
         _restService = restService;
     }
 
-    protected async override void OnAppearing()
+    protected override void OnAppearing()
     {
         base.OnAppearing();
-        listDatabases.ItemsSource = await _restService.GetDatabasesAsync();
+
+        LoadDatabases();
     }
     private void listDatabases_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
@@ -39,8 +41,24 @@ public partial class DatabasesPage : ContentPage
         Shell.Current.GoToAsync(nameof(CreateDatabasePage), navigationParameter);
     }
 
-    private void DeleteMenuItem_Clicked(object sender, EventArgs e)
+    private async void OnDeleteDatabaseClicked(object sender, EventArgs e)
     {
+        var menuItem = sender as MenuItem;
+        if (menuItem != null)
+        {
+            var dbName = menuItem.CommandParameter as string;
+            if (dbName != null)
+            {
+                await _restService.DeleteDatabaseAsync(dbName);
 
+                LoadDatabases();
+            }
+        }
+    }
+
+    private async void LoadDatabases()
+    {
+        var databases = new ObservableCollection<DatabaseDTO>(await _restService.GetDatabasesAsync());
+        listDatabases.ItemsSource = databases;
     }
 }

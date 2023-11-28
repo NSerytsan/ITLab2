@@ -56,5 +56,19 @@ namespace ITLab2.MAUI.App.Services
                 Debug.WriteLine(@"\tError {0}", ex.Message);
             }
         }
+
+        public async Task DeleteDatabaseAsync(string dbName)
+        {
+            Uri uri = new(string.Format(Constants.DatabasesRestUrl, dbName));
+
+            try
+            {
+                HttpResponseMessage response = await _client.DeleteAsync(uri);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tError {0}", ex.Message);
+            }
+        }
     }
 }

@@ -33,7 +33,8 @@
                         <TextCell.ContextActions>
                             <MenuItem Text="Delete"
                                       IsDestructive="True"
-                                      Clicked="DeleteMenuItem_Clicked"></MenuItem>
+                                      Clicked="OnDeleteDatabaseClicked"
+                                      CommandParameter="{Binding Name}"></MenuItem>
                         </TextCell.ContextActions>
                     </TextCell>
                 </DataTemplate>

@@ -23,8 +23,8 @@
                Placeholder="Enter Database name" />
         
         <Button Text="Save" 
-                />
+                Clicked="OnSaveButtonClicked"/>
         <Button Text="Cancel" 
-                />
+                Clicked="OnCancelButtonClicked"/>
     </VerticalStackLayout>
 </ContentPage>
