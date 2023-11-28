@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ITLab2.MAUI.App.Views.AddUpdateTablePage"
+             Title="Add Table">
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Margin"
+                Value="0,10,0,10" />
+            <Setter Property="FontAttributes"
+                Value="Bold" />
+            <Setter Property="FontSize"
+                Value="20" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin"
+                Value="0,5,0,5" />
+        </Style>
+    </ContentPage.Resources>
+    <VerticalStackLayout Margin="20">
+        <Label Text="Name" />
+        <Entry Text="{Binding Path=CreateTableDTO.Name}"
+           Placeholder="Enter Table name" />
+
+        <Button Text="Save" 
+            Clicked="OnSaveButtonClicked"/>
+        <Button Text="Cancel" 
+            Clicked="OnCancelButtonClicked"/>
+    </VerticalStackLayout>
+</ContentPage>

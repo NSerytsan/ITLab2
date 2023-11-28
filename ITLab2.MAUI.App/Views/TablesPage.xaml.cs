@@ -27,6 +27,11 @@ public partial class TablesPage : ContentPage
 
     private void OnAddTableClicked(object sender, EventArgs e)
     {
+        var navigationParameter = new Dictionary<string, object>
+            {
+                { nameof(CreateTableDTO), new CreateTableDTO { Name = String.Empty } }
+            };
+        Shell.Current.GoToAsync(nameof(AddUpdateTablePage), navigationParameter);
     }
 
     private void listTables_ItemSelected(object sender, SelectedItemChangedEventArgs e)
