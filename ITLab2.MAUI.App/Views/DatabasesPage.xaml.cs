@@ -18,13 +18,24 @@ public partial class DatabasesPage : ContentPage
     }
     private void listDatabases_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
+        if (listDatabases.SelectedItem != null)
+        {
+
+        }
     }
 
     private void listDatabases_ItemTapped(object sender, ItemTappedEventArgs e)
     {
+        listDatabases.SelectedItem = null;
     }
 
     private void OnCreateDatabaseClicked(object sender, EventArgs e)
     {
+        Shell.Current.GoToAsync(nameof(CreateDatabasePage));
+    }
+
+    private void DeleteMenuItem_Clicked(object sender, EventArgs e)
+    {
+
     }
 }

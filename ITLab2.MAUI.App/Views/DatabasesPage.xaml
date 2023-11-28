@@ -22,16 +22,22 @@
             BackgroundColor="Transparent"
             SeparatorColor="Silver"
             RowHeight="65"
+            SelectionMode="Single"
             ItemSelected="listDatabases_ItemSelected"
             ItemTapped="listDatabases_ItemTapped"
             >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextCell
-                        Text="{Binding Name}"></TextCell>
+                        Text="{Binding Name}">
+                        <TextCell.ContextActions>
+                            <MenuItem Text="Delete"
+                                      IsDestructive="True"
+                                      Clicked="DeleteMenuItem_Clicked"></MenuItem>
+                        </TextCell.ContextActions>
+                    </TextCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
     </Grid>
 </ContentPage>

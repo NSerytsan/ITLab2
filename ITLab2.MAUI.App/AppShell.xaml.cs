@@ -9,7 +9,7 @@ namespace ITLab2.MAUI.App
             InitializeComponent();
 
             Routing.RegisterRoute(nameof(DatabasesPage), typeof(DatabasesPage));
-            Routing.RegisterRoute(nameof(AddDatabasePage), typeof(AddDatabasePage));
+            Routing.RegisterRoute(nameof(CreateDatabasePage), typeof(CreateDatabasePage));
             Routing.RegisterRoute(nameof(TablesPage), typeof(TablesPage));
         }
     }

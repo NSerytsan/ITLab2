@@ -75,7 +75,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\AddDatabasePage.xaml">
+	  <Compile Update="Views\CreateDatabasePage.xaml.cs">
+	    <DependentUpon>CreateDatabasePage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\CreateDatabasePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\DatabasesPage.xaml">
