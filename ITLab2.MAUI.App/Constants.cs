@@ -8,5 +8,6 @@
         public static string DatabasesRestUrl = $"{Scheme}://{LocalhostUrl}:{Port}/database/{{0}}";
         public static string TablesRestUrl = $"{Scheme}://{LocalhostUrl}:{Port}/database/{{0}}/tables/{{1}}";
         public static string ColumnsRestUrl = $"{Scheme}://{LocalhostUrl}:{Port}/database/{{0}}/tables/{{1}}/columns/{{2}}";
+        public static readonly List<string> DatabaseTypes = ["String", "Integer", "Decimal", "DateTime"];
     }
 }
