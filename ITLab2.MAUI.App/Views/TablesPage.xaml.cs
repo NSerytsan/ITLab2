@@ -42,13 +42,13 @@ public partial class TablesPage : ContentPage
         listTables.SelectedItem = null;
     }
 
-    private void OnDeleteTableClicked(object sender, EventArgs e)
+    private async void OnDeleteTableClicked(object sender, EventArgs e)
     {
         if (sender is MenuItem menuItem)
         {
-            if (menuItem.CommandParameter is string dbName)
+            if (menuItem.CommandParameter is string tableName)
             {
-
+                await _restService.DeleteTableAsync(DatabaseName, tableName);
                 LoadTables();
             }
         }

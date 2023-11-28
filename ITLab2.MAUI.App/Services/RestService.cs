@@ -91,5 +91,36 @@ namespace ITLab2.MAUI.App.Services
 
             return tables;
         }
+
+        public async Task CreateTableAsync(CreateTableDTO table, string dbName)
+        {
+            Uri uri = new(string.Format(Constants.TablesRestUrl, dbName, string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<CreateTableDTO>(table, _serializerOptions);
+                StringContent content = new(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await _client.PostAsync(uri, content);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tError {0}", ex.Message);
+            }
+        }
+
+        public async Task DeleteTableAsync(string dbName, string tableName)
+        {
+            Uri uri = new(string.Format(Constants.TablesRestUrl, dbName, tableName));
+
+            try
+            {
+                HttpResponseMessage response = await _client.DeleteAsync(uri);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tError {0}", ex.Message);
+            }
+        }
     }
 }
