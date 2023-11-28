@@ -30,7 +30,14 @@ public partial class ColumnsPage : ContentPage
 
     private void OnAddColumnClicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync($"{nameof(AddUpdateColumnPage)}?dbName={DatabaseName}&tableName={TableName}");
+        var navigationParameter = new Dictionary<string, object>
+            {
+                { nameof(CreateColumnDTO), new CreateColumnDTO { Name = String.Empty , Type = "String"} },
+                { "dbName", DatabaseName},
+                { "tableName", TableName }
+            };
+
+        Shell.Current.GoToAsync($"{nameof(AddUpdateColumnPage)}", navigationParameter);
     }
 
     private void listColumns_ItemSelected(object sender, SelectedItemChangedEventArgs e)

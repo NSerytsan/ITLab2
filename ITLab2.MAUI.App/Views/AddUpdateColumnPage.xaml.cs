@@ -2,6 +2,7 @@ using ITLab2.MAUI.App.DTO;
 using ITLab2.MAUI.App.Services;
 
 namespace ITLab2.MAUI.App.Views;
+[QueryProperty((nameof(CreateColumnDTO)), "CreateColumnDTO")]
 [QueryProperty((nameof(DatabaseName)), "dbName")]
 [QueryProperty((nameof(TableName)), "tableName")]
 public partial class AddUpdateColumnPage : ContentPage
@@ -36,7 +37,7 @@ public partial class AddUpdateColumnPage : ContentPage
 
     async void OnSaveButtonClicked(object sender, EventArgs e)
     {
-        //await _restService.CreateColumnAsync(CreateColumnDTO, DatabaseName, TableName);
+        await _restService.CreateColumnAsync(CreateColumnDTO, DatabaseName, TableName);
 
         await Shell.Current.GoToAsync("..");
     }

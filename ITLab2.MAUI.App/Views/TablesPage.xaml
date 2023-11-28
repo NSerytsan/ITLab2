@@ -32,8 +32,8 @@
                     Text="{Binding Name}">
                         <TextCell.ContextActions>
                             <MenuItem
-                                Text="Columns"
-                                Clicked="OnColumnsClicked"
+                                Text="Rename"
+                                Clicked="OnRenameClicked"
                                 CommandParameter="{Binding Name}">
                             </MenuItem>
                             <MenuItem
