@@ -11,7 +11,6 @@ namespace ITLab2.MAUI.App.Services
         private readonly HttpClient _client;
         private readonly JsonSerializerOptions _serializerOptions;
 
-        public List<DatabaseDTO> Databases { get; private set; } = [];
         public RestService()
         {
             _client = new HttpClient();
@@ -23,6 +22,7 @@ namespace ITLab2.MAUI.App.Services
         }
         public async Task<List<DatabaseDTO>> GetDatabasesAsync()
         {
+            var databases = new List<DatabaseDTO>();
             Uri uri = new(string.Format(Constants.DatabasesRestUrl, string.Empty));
             try
             {
@@ -30,7 +30,7 @@ namespace ITLab2.MAUI.App.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    Databases = JsonSerializer.Deserialize<List<DatabaseDTO>>(content, _serializerOptions) ?? [];
+                    databases = JsonSerializer.Deserialize<List<DatabaseDTO>>(content, _serializerOptions) ?? [];
                 }
             }
             catch (Exception ex)
@@ -38,7 +38,7 @@ namespace ITLab2.MAUI.App.Services
                 Debug.WriteLine(@"\tError {0}", ex.Message);
             }
 
-            return Databases;
+            return databases;
         }
 
         public async Task CreateDatabaseAsync(CreateDatabaseDTO database)
@@ -69,6 +69,27 @@ namespace ITLab2.MAUI.App.Services
             {
                 Debug.WriteLine(@"\tError {0}", ex.Message);
             }
+        }
+
+        public async Task<List<TableDTO>> GetTablesAsync(string dbName)
+        {
+            var tables = new List<TableDTO>();
+            Uri uri = new(string.Format(Constants.TablesRestUrl, dbName, string.Empty));
+            try
+            {
+                HttpResponseMessage response = await _client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    tables = JsonSerializer.Deserialize<List<TableDTO>>(content, _serializerOptions) ?? [];
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tError {0}", ex.Message);
+            }
+
+            return tables;
         }
     }
 }

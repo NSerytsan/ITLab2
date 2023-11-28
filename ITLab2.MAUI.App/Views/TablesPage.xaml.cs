@@ -1,4 +1,6 @@
+using ITLab2.MAUI.App.DTO;
 using ITLab2.MAUI.App.Services;
+using System.Collections.ObjectModel;
 
 namespace ITLab2.MAUI.App.Views;
 
@@ -7,7 +9,7 @@ public partial class TablesPage : ContentPage
 {
     public string DatabaseName { get; set; } = String.Empty;
 
-    private IRestService _restService;
+    private readonly IRestService _restService;
 
     public TablesPage(IRestService restService)
     {
@@ -52,7 +54,9 @@ public partial class TablesPage : ContentPage
         }
     }
 
-    private void LoadTables()
+    private async void LoadTables()
     {
+        var tables = new ObservableCollection<TableDTO>(await _restService.GetTablesAsync(DatabaseName));
+        listTables.ItemsSource = tables;
     }
 }

@@ -7,5 +7,7 @@ namespace ITLab2.MAUI.App.Services
         public Task<List<DatabaseDTO>> GetDatabasesAsync();
         public Task CreateDatabaseAsync(CreateDatabaseDTO database);
         public Task DeleteDatabaseAsync(string dbName);
+
+        public Task<List<TableDTO>> GetTablesAsync(string dbName);
     }
 }
