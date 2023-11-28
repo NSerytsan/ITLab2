@@ -29,7 +29,8 @@ public partial class TablesPage : ContentPage
     {
         var navigationParameter = new Dictionary<string, object>
             {
-                { nameof(CreateTableDTO), new CreateTableDTO { Name = String.Empty } }
+                { nameof(CreateTableDTO), new CreateTableDTO { Name = String.Empty } },
+                { "dbName", DatabaseName}
             };
         Shell.Current.GoToAsync(nameof(AddUpdateTablePage), navigationParameter);
     }
