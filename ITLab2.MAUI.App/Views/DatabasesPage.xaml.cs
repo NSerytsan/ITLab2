@@ -43,11 +43,9 @@ public partial class DatabasesPage : ContentPage
 
     private async void OnDeleteDatabaseClicked(object sender, EventArgs e)
     {
-        var menuItem = sender as MenuItem;
-        if (menuItem != null)
+        if (sender is MenuItem menuItem)
         {
-            var dbName = menuItem.CommandParameter as string;
-            if (dbName != null)
+            if (menuItem.CommandParameter is string dbName)
             {
                 await _restService.DeleteDatabaseAsync(dbName);
 
