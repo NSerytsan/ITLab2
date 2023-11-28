@@ -122,5 +122,57 @@ namespace ITLab2.MAUI.App.Services
                 Debug.WriteLine(@"\tError {0}", ex.Message);
             }
         }
+
+        public async Task<List<ColumnDTO>> GetColumnsAsync(string dbName, string tableName)
+        {
+            var columns = new List<ColumnDTO>();
+            Uri uri = new(string.Format(Constants.ColumnsRestUrl, dbName, tableName, string.Empty));
+            try
+            {
+                HttpResponseMessage response = await _client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    columns = JsonSerializer.Deserialize<List<ColumnDTO>>(content, _serializerOptions) ?? [];
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tError {0}", ex.Message);
+            }
+
+            return columns;
+        }
+
+        public async Task CreateColumnAsync(CreateColumnDTO column, string dbName, string tableName)
+        {
+            Uri uri = new(string.Format(Constants.ColumnsRestUrl, dbName, tableName, string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<CreateColumnDTO>(column, _serializerOptions);
+                StringContent content = new(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await _client.PostAsync(uri, content);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tError {0}", ex.Message);
+            }
+        }
+
+        public async Task DeleteColumnAsync(string dbName, string tableName, string columnName)
+        {
+            Uri uri = new(string.Format(Constants.ColumnsRestUrl, dbName, tableName, columnName));
+
+            try
+            {
+                HttpResponseMessage response = await _client.DeleteAsync(uri);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tError {0}", ex.Message);
+            }
+        }
     }
 }

@@ -22,6 +22,7 @@ public partial class AddUpdateTablePage : ContentPage
             OnPropertyChanged();
         }
     }
+
     public AddUpdateTablePage(IRestService restService)
     {
         InitializeComponent();

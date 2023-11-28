@@ -11,5 +11,9 @@ namespace ITLab2.MAUI.App.Services
         public Task<List<TableDTO>> GetTablesAsync(string dbName);
         public Task CreateTableAsync(CreateTableDTO table, string dbName);
         public Task DeleteTableAsync(string dbName, string tableName);
+
+        public Task<List<ColumnDTO>> GetColumnsAsync(string dbName, string tableName);
+        public Task CreateColumnAsync(CreateColumnDTO table, string dbName, string tableName);
+        public Task DeleteColumnAsync(string dbName, string tableName, string columnName);
     }
 }

@@ -1,4 +1,6 @@
+using ITLab2.MAUI.App.DTO;
 using ITLab2.MAUI.App.Services;
+using System.Collections.ObjectModel;
 
 namespace ITLab2.MAUI.App.Views;
 
@@ -39,11 +41,21 @@ public partial class ColumnsPage : ContentPage
     {
     }
 
-    private void OnDeleteColumnClicked(object sender, EventArgs e)
+    private async void OnDeleteColumnClicked(object sender, EventArgs e)
     {
+        if (sender is MenuItem menuItem)
+        {
+            if (menuItem.CommandParameter is string columnName)
+            {
+                await _restService.DeleteColumnAsync(DatabaseName, TableName, columnName);
+                LoadColumns();
+            }
+        }
     }
 
-    private void LoadColumns()
+    private async void LoadColumns()
     {
+        var columns = new ObservableCollection<ColumnDTO>(await _restService.GetColumnsAsync(DatabaseName, TableName));
+        listColumns.ItemsSource = columns;
     }
 }
