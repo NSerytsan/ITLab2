@@ -35,6 +35,13 @@ public partial class AddUpdateColumnPage : ContentPage
         BindingContext = this;
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        
+        TypesPicker.ItemsSource = Constants.DatabaseTypes;
+    }
+
     async void OnSaveButtonClicked(object sender, EventArgs e)
     {
         await _restService.CreateColumnAsync(CreateColumnDTO, DatabaseName, TableName);
@@ -45,5 +52,18 @@ public partial class AddUpdateColumnPage : ContentPage
     async void OnCancelButtonClicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("..");
+    }
+
+    private void OnSelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (sender is Picker picker)
+        { 
+            int selectedIndex = picker.SelectedIndex;
+            if (selectedIndex != -1)
+            { 
+                if (picker.ItemsSource[selectedIndex] is DatabaseType dbType)
+                CreateColumnDTO.Type = dbType.Name;
+            }
+        }
     }
 }

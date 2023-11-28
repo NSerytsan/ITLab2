@@ -21,7 +21,12 @@
         <Label Text="Name" />
         <Entry Text="{Binding Path=CreateColumnDTO.Name}"
        Placeholder="Enter Column name" />
-
+        <Picker
+            x:Name="TypesPicker"
+            Title="Select Type"
+            ItemDisplayBinding="{Binding Name}"
+            SelectedItem="{Binding SelectedType}"
+            SelectedIndexChanged="OnSelectedIndexChanged"/>
         <Button Text="Save" 
         Clicked="OnSaveButtonClicked"/>
         <Button Text="Cancel" 

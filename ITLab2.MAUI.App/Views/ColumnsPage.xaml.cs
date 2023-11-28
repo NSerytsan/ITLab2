@@ -46,6 +46,7 @@ public partial class ColumnsPage : ContentPage
 
     private void listColumns_ItemTapped(object sender, ItemTappedEventArgs e)
     {
+        listColumns.SelectedItem = null;
     }
 
     private async void OnDeleteColumnClicked(object sender, EventArgs e)
