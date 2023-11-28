@@ -1,6 +1,7 @@
 ﻿
 using ITLab2.MAUI.App.DTO;
 using System.Diagnostics;
+using System.Text;
 using System.Text.Json;
 
 namespace ITLab2.MAUI.App.Services
@@ -38,6 +39,22 @@ namespace ITLab2.MAUI.App.Services
             }
 
             return Databases;
+        }
+
+        public async Task CreateDatabaseAsync(CreateDatabaseDTO database)
+        {
+            Uri uri = new(string.Format(Constants.DatabasesRestUrl, string.Empty));
+            try
+            {
+                string json = JsonSerializer.Serialize<CreateDatabaseDTO>(database, _serializerOptions);
+                StringContent content = new(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await _client.PostAsync(uri, content);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tError {0}", ex.Message);
+            }
         }
     }
 }

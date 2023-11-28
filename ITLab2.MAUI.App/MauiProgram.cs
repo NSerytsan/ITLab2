@@ -23,6 +23,7 @@ namespace ITLab2.MAUI.App
             builder.Services.AddSingleton<IRestService, RestService>();
 
             builder.Services.AddSingleton<DatabasesPage>();
+            builder.Services.AddSingleton<CreateDatabasePage>();
 
             return builder.Build();
         }

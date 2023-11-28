@@ -1,3 +1,4 @@
+using ITLab2.MAUI.App.DTO;
 using ITLab2.MAUI.App.Services;
 
 namespace ITLab2.MAUI.App.Views;
@@ -31,7 +32,11 @@ public partial class DatabasesPage : ContentPage
 
     private void OnCreateDatabaseClicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync(nameof(CreateDatabasePage));
+        var navigationParameter = new Dictionary<string, object>
+            {
+                { nameof(CreateDatabaseDTO), new CreateDatabaseDTO { Name = String.Empty } }
+            };
+        Shell.Current.GoToAsync(nameof(CreateDatabasePage), navigationParameter);
     }
 
     private void DeleteMenuItem_Clicked(object sender, EventArgs e)

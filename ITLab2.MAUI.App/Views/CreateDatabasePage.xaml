@@ -19,7 +19,7 @@
     </ContentPage.Resources>
     <VerticalStackLayout Margin="20">
         <Label Text="Name" />
-        <Entry Text="{Binding Path=Database.Name}" 
+        <Entry Text="{Binding Path=CreateDatabaseDTO.Name}" 
                Placeholder="Enter Database name" />
         
         <Button Text="Save" 
