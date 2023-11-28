@@ -49,7 +49,7 @@ public partial class TablesPage : ContentPage
     {
         if (listTables.SelectedItem != null)
         {
-            
+
         }
     }
 

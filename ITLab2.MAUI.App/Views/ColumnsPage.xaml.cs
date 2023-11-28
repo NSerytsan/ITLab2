@@ -28,11 +28,11 @@ public partial class ColumnsPage : ContentPage
 
     private void OnAddColumnClicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync(nameof(AddUpdateColumnPage));
+        Shell.Current.GoToAsync($"{nameof(AddUpdateColumnPage)}?dbName={DatabaseName}&tableName={TableName}");
     }
 
     private void listColumns_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-    { 
+    {
     }
 
     private void listColumns_ItemTapped(object sender, ItemTappedEventArgs e)
@@ -40,9 +40,9 @@ public partial class ColumnsPage : ContentPage
     }
 
     private void OnDeleteColumnClicked(object sender, EventArgs e)
-    { 
+    {
     }
-    
+
     private void LoadColumns()
     {
     }
