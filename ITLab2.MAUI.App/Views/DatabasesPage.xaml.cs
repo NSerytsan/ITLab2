@@ -23,7 +23,7 @@ public partial class DatabasesPage : ContentPage
     {
         if (listDatabases.SelectedItem != null)
         {
-
+            Shell.Current.GoToAsync(nameof(TablesPage));
         }
     }
 
