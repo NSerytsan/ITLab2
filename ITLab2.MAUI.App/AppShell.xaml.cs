@@ -12,6 +12,8 @@ namespace ITLab2.MAUI.App
             Routing.RegisterRoute(nameof(CreateDatabasePage), typeof(CreateDatabasePage));
             Routing.RegisterRoute(nameof(TablesPage), typeof(TablesPage));
             Routing.RegisterRoute(nameof(AddUpdateTablePage), typeof(AddUpdateTablePage));
+            Routing.RegisterRoute(nameof(ColumnsPage), typeof(ColumnsPage));
+            Routing.RegisterRoute(nameof(AddUpdateColumnPage), typeof(AddUpdateColumnPage));
         }
     }
 }

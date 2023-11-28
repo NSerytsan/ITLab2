@@ -75,6 +75,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\AddUpdateColumnPage.xaml.cs">
+	    <DependentUpon>AddUpdateColumnPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\AddUpdateTablePage.xaml.cs">
 	    <DependentUpon>AddUpdateTablePage.xaml</DependentUpon>
 	  </Compile>
@@ -84,7 +87,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\AddUpdateColumnPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\AddUpdateTablePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ColumnsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\CreateDatabasePage.xaml">

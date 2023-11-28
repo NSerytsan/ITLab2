@@ -26,6 +26,7 @@ namespace ITLab2.MAUI.App
             builder.Services.AddSingleton<CreateDatabasePage>();
             builder.Services.AddSingleton<TablesPage>();
             builder.Services.AddSingleton<AddUpdateTablePage>();
+            builder.Services.AddSingleton<ColumnsPage>();
 
             return builder.Build();
         }

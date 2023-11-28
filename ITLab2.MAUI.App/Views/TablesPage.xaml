@@ -31,10 +31,17 @@
                     <TextCell
                     Text="{Binding Name}">
                         <TextCell.ContextActions>
-                            <MenuItem Text="Delete"
-                                  IsDestructive="True"
-                                  Clicked="OnDeleteTableClicked"
-                                  CommandParameter="{Binding Name}"></MenuItem>
+                            <MenuItem
+                                Text="Columns"
+                                Clicked="OnColumnsClicked"
+                                CommandParameter="{Binding Name}">
+                            </MenuItem>
+                            <MenuItem
+                                Text="Delete"
+                                IsDestructive="True"
+                                Clicked="OnDeleteTableClicked"
+                                CommandParameter="{Binding Name}">
+                            </MenuItem>
                         </TextCell.ContextActions>
                     </TextCell>
                 </DataTemplate>

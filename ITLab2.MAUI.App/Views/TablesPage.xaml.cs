@@ -35,11 +35,21 @@ public partial class TablesPage : ContentPage
         Shell.Current.GoToAsync(nameof(AddUpdateTablePage), navigationParameter);
     }
 
+    private void OnColumnsClicked(object sender, EventArgs e)
+    {
+        if (sender is MenuItem menuItem)
+        {
+            if (menuItem.CommandParameter is string tableName)
+            {
+                Shell.Current.GoToAsync($"{nameof(ColumnsPage)}?dbName={DatabaseName}&tableName={tableName}");
+            }
+        }
+    }
     private void listTables_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
         if (listTables.SelectedItem != null)
         {
-
+            
         }
     }
 

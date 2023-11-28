@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ITLab2.MAUI.App.Views.ColumnsPage"
+             Title="Columns">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add Column" Clicked="OnAddColumnClicked">
+            <ToolbarItem.IconImageSource>
+                <OnPlatform x:TypeArguments="ImageSource">
+                    <On Platform="Android, WinUI" Value="plus.png" />
+                </OnPlatform>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <Grid 
+Padding="5"
+RowDefinitions="*, 50"
+ColumnDefinitions="*">
+        <ListView 
+    Grid.Row="0" Grid.Column="0"
+    x:Name="listColumns"
+    BackgroundColor="Transparent"
+    SeparatorColor="Silver"
+    RowHeight="65"
+    SelectionMode="Single"
+    ItemSelected="listColumns_ItemSelected"
+    ItemTapped="listColumns_ItemTapped"
+    >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell
+                Text="{Binding Name}">
+                        <TextCell.ContextActions>
+                            <MenuItem Text="Delete"
+                              IsDestructive="True"
+                              Clicked="OnDeleteColumnClicked"
+                              CommandParameter="{Binding Name}"></MenuItem>
+                        </TextCell.ContextActions>
+                    </TextCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</ContentPage>
