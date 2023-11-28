@@ -7,8 +7,8 @@ namespace ITLab2.MAUI.App.Views;
 [QueryProperty(nameof(DatabaseName), "dbName")]
 public partial class AddUpdateTablePage : ContentPage
 {
-    IRestService _restService;
-
+    readonly IRestService _restService;
+    
     CreateTableDTO _createTableDTO;
 
     public string DatabaseName { get; set; } = String.Empty;
@@ -36,7 +36,7 @@ public partial class AddUpdateTablePage : ContentPage
     async void OnSaveButtonClicked(object sender, EventArgs e)
     {
         await _restService.CreateTableAsync(CreateTableDTO, DatabaseName);
-
+    
         await Shell.Current.GoToAsync("..");
     }
 
