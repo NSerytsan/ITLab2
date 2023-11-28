@@ -1,16 +1,25 @@
+using ITLab2.MAUI.App.Services;
+
 namespace ITLab2.MAUI.App.Views;
 
+[QueryProperty(nameof(DatabaseName), "dbName")]
 public partial class TablesPage : ContentPage
 {
-    public TablesPage()
+    public string DatabaseName { get; set; } = String.Empty;
+
+    private IRestService _restService;
+
+    public TablesPage(IRestService restService)
     {
         InitializeComponent();
+
+        _restService = restService;
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
-
+        Title = DatabaseName + " Tables";
         LoadTables();
     }
 
