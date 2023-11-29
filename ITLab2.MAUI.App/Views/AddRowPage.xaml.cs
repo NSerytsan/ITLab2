@@ -9,19 +9,7 @@ public partial class AddRowPage : ContentPage
 {
     private readonly IRestService _restService;
 
-    private CreateRowDTO _createRowDTO;
-
     private List<ColumnDTO> _columns = [];
-
-    public CreateRowDTO CreateRowDTO
-    {
-        get => _createRowDTO;
-        set
-        {
-            _createRowDTO = value;
-            OnPropertyChanged();
-        }
-    }
 
     public string DatabaseName { get; set; } = String.Empty;
 
@@ -32,8 +20,6 @@ public partial class AddRowPage : ContentPage
         InitializeComponent();
 
         _restService = restService;
-
-        _createRowDTO = new CreateRowDTO();
     }
 
     protected override void OnAppearing()
@@ -60,14 +46,15 @@ public partial class AddRowPage : ContentPage
     private async void OnSaveButtonClicked(object sender, EventArgs e)
     {
         var entries = RowLayout.Children.Where(c => c is Entry);
+        CreateRowDTO createRowDTO = new();
         foreach (var entry in entries)
         { 
             var name = ((Entry)entry).Placeholder;
             var column = _columns.First(c => c.Name.Equals(name));
-            CreateRowDTO.Items.Add(column.Id, ((Entry)entry).Text);
+            createRowDTO.Items.Add(column.Id, ((Entry)entry).Text);
         }
 
-        await _restService.CreateRowAsync(CreateRowDTO, DatabaseName, TableName);
+        await _restService.CreateRowAsync(createRowDTO, DatabaseName, TableName);
 
         await Shell.Current.GoToAsync("..");
     }
