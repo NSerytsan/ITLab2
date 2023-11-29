@@ -27,7 +27,15 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextCell
-                Text="{Binding .}">
+                        Text="{Binding FormattedRow}">
+                        <TextCell.ContextActions>
+                            <MenuItem
+                                Text="Delete"
+                                IsDestructive="True"
+                                Clicked="OnDeleteRowClicked"
+                                CommandParameter="{Binding Id}">
+                            </MenuItem>
+                        </TextCell.ContextActions>
                     </TextCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

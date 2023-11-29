@@ -18,5 +18,6 @@ namespace ITLab2.MAUI.App.Services
 
         public Task CreateRowAsync(CreateRowDTO row, string dbName, string tableName);
         public Task<List<GetRowDTO>> GetRowsAsync(string dbName, string tableName);
+        public Task DeleteRowAsync(string dbName, string tableName, int rowId);
     }
 }

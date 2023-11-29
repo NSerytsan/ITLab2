@@ -1,6 +1,14 @@
+using ITLab2.MAUI.App.DTO;
 using ITLab2.MAUI.App.Services;
 
 namespace ITLab2.MAUI.App.Views;
+
+public class ShowRow
+{
+    public string FormattedRow {get;set;} = String.Empty;
+    public int Id { get;set;}
+}
+
 
 [QueryProperty((nameof(DatabaseName)), "dbName")]
 [QueryProperty((nameof(TableName)), "tableName")]
@@ -33,13 +41,26 @@ public partial class RowsPage : ContentPage
     private async void LoadRows()
     { 
         var rowObjects = await _restService.GetRowsAsync(DatabaseName, TableName);
-        var rows = new List<string>();
+        var rows = new List<ShowRow>();
         foreach (var row in rowObjects)
         {
             var fields = row.Items.Values.Cast<string>().ToList();
-            rows.Add(String.Join(", ", fields));
+
+            rows.Add(new ShowRow() { FormattedRow = String.Join(", ", fields), Id = row.Id });
         }
 
         listRows.ItemsSource = rows;
+    }
+
+    private async void OnDeleteRowClicked(object sender, EventArgs e)
+    {
+        if (sender is MenuItem menuItem)
+        {
+            if (menuItem.CommandParameter is int rowId)
+            {
+                await _restService.DeleteRowAsync(DatabaseName, TableName, rowId);
+                LoadRows();
+            }
+        }
     }
 }

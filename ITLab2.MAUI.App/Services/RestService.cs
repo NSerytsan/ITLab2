@@ -213,5 +213,19 @@ namespace ITLab2.MAUI.App.Services
                 Debug.WriteLine(@"\tError {0}", ex.Message);
             }
         }
+
+        public async Task DeleteRowAsync(string dbName, string tableName, int rowId)
+        {
+            Uri uri = new(string.Format(Constants.RowsRestUrl, dbName, tableName, rowId));
+
+            try
+            {
+                HttpResponseMessage response = await _client.DeleteAsync(uri);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tError {0}", ex.Message);
+            }
+        }
     }
 }
