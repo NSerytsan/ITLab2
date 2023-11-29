@@ -50,6 +50,7 @@ public partial class TablesPage : ContentPage
     {
         if (listTables.SelectedItem != null)
         {
+            Shell.Current.GoToAsync($"{nameof(RowsPage)}?dbName={DatabaseName}&tableName={((TableDTO)listTables.SelectedItem).Name}");
         }
     }
 

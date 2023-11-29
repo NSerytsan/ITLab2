@@ -38,7 +38,7 @@ public partial class AddUpdateColumnPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        
+
         TypesPicker.ItemsSource = Constants.DatabaseTypes;
     }
 
@@ -57,12 +57,12 @@ public partial class AddUpdateColumnPage : ContentPage
     private void OnSelectedIndexChanged(object sender, EventArgs e)
     {
         if (sender is Picker picker)
-        { 
+        {
             int selectedIndex = picker.SelectedIndex;
             if (selectedIndex != -1)
-            { 
+            {
                 if (picker.ItemsSource[selectedIndex] is DatabaseType dbType)
-                CreateColumnDTO.Type = dbType.Name;
+                    CreateColumnDTO.Type = dbType.Name;
             }
         }
     }

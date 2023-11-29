@@ -17,4 +17,9 @@ namespace ITLab2.MAUI.App.DTO
     public class UpdateRowDTO : BaseRowDTO
     {
     }
+
+    public class GetRowDTO
+    {
+        public Dictionary<string, string> Items { get; set; } = [];
+    }
 }

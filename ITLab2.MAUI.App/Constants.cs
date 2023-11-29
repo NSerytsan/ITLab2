@@ -10,6 +10,8 @@ namespace ITLab2.MAUI.App
         public static string DatabasesRestUrl = $"{Scheme}://{LocalhostUrl}:{Port}/database/{{0}}";
         public static string TablesRestUrl = $"{Scheme}://{LocalhostUrl}:{Port}/database/{{0}}/tables/{{1}}";
         public static string ColumnsRestUrl = $"{Scheme}://{LocalhostUrl}:{Port}/database/{{0}}/tables/{{1}}/columns/{{2}}";
+        public static string RowsRestUrl = $"{Scheme}://{LocalhostUrl}:{Port}/database/{{0}}/tables/{{1}}/rows/{{2}}";
+        
         public static readonly List<DatabaseType> DatabaseTypes = [
             new() { Name = "String", SystemType = "System.String" },
             new() { Name = "Integer", SystemType = "System.Int32" },
