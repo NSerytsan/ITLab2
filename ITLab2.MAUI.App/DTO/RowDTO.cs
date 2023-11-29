@@ -20,6 +20,7 @@ namespace ITLab2.MAUI.App.DTO
 
     public class GetRowDTO
     {
+        public int Id { get; set; }
         public Dictionary<string, string> Items { get; set; } = [];
     }
 }
